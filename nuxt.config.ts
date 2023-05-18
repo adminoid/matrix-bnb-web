@@ -1,9 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { defineNuxtConfig } from 'nuxt/config';
-
-console.info(process.env.CHAIN_ID)
+// console.info(process.env.CHAIN_ID)
 
 export default defineNuxtConfig({
+  devServer: {
+    port: 3333,
+  },
   runtimeConfig: {
     public: {
       CHAIN_ID:

@@ -31,17 +31,7 @@
 
 .container
 
-  ul.nav.nav-tabs
-    li.nav-item
-      a.nav-link.active(aria-current='page', href='#') Active
-    li.nav-item
-      a.nav-link(href='#') Link
-    li.nav-item
-      a.nav-link(href='#') Link
-    li.nav-item
-      a.nav-link.disabled Disabled
-
-  .row.frame
+  .row.frame.border-success
     .row.mb-3(v-if="disabled.status")
       strong Awaiting {{ disabled.cause }}... &nbsp;
         span.spinner-border.ms-auto.text-warning(role="status")
@@ -65,7 +55,18 @@
           :disabled="disabled.status"
         ) Disconnect Metamask
 
-  .row.frame
+.container
+  ul.nav.nav-tabs.mt-2
+    li.nav-item
+      a.nav-link.active(aria-current='page', href='#') Active
+    li.nav-item
+      a.nav-link(href='#') Link
+    li.nav-item
+      a.nav-link(href='#') Link
+    li.nav-item
+      a.nav-link.disabled Disabled
+
+  .row.frame.frame_no-top
     .mb-3.row(v-if="registerWhoseAddr")
       .debug-panel {{ registerWhoseAddr }}
     .mb-3.row
@@ -322,6 +323,8 @@ const closeAlert = (index) => {
   border-radius: 1em
   padding: 1em
   margin-top: 2em !important
+  &.frame_no-top
+    margin-top: 0 !important
   &_no-padding
     padding: 0
     border-color: rgba(10, 83, 190, 0.42)
@@ -339,4 +342,6 @@ const closeAlert = (index) => {
   height: 20px
   position: relative
   top: 3px
+ul.nav.nav-tabs
+  margin-bottom: 20px
 </style>
