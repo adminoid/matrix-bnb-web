@@ -1,0 +1,53 @@
+// Custom.scss
+// Option B: Include parts of Bootstrap
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "node_modules/bootstrap/scss/_functions.scss"
+@import "node_modules/bootstrap/scss/_variables"
+@import "node_modules/bootstrap/scss/mixins"
+
+$tertiary: #3fb247
+$custom-theme-colors:map-merge($theme-colors, ("tertiary": $tertiary))
+$theme-colors: map-merge($theme-colors, $custom-theme-colors)
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value")
+
+// 2. Include any default variable overrides here
+// Default variable overrides
+//$body-bg: aquamarine
+//$body-color: #555
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "node_modules/bootstrap/scss/root"
+
+// 4. Include any optional Bootstrap CSS as needed
+@import "node_modules/bootstrap/scss/reboot"
+
+@import "node_modules/bootstrap/scss/maps"
+
+@import "node_modules/bootstrap/scss/utilities"
+@import "node_modules/bootstrap/scss/type"
+@import "node_modules/bootstrap/scss/images"
+@import "node_modules/bootstrap/scss/containers"
+@import "node_modules/bootstrap/scss/grid"
+@import "node_modules/bootstrap/scss/helpers"
+@import "node_modules/bootstrap/scss/navbar"
+@import "node_modules/bootstrap/scss/buttons"
+@import "node_modules/bootstrap/scss/button-group"
+@import "node_modules/bootstrap/scss/forms"
+@import "node_modules/bootstrap/scss/alert"
+@import "node_modules/bootstrap/scss/spinners"
+@import "node_modules/bootstrap/scss/close"
+
+// 5. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "node_modules/bootstrap/scss/bootstrap-utilities"
+//@import "node_modules/bootstrap/scss/utilities/_api.scss"
+
+// 6. Add additional custom code here
+//body
+//  background: aquamarine
+
+@import "node_modules/bootstrap/scss/maps"
+
+.frame_info
+  .btn-close
+    min-width: 17px
