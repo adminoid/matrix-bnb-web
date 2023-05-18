@@ -31,6 +31,16 @@
 
 .container
 
+  ul.nav.nav-tabs
+    li.nav-item
+      a.nav-link.active(aria-current='page', href='#') Active
+    li.nav-item
+      a.nav-link(href='#') Link
+    li.nav-item
+      a.nav-link(href='#') Link
+    li.nav-item
+      a.nav-link.disabled Disabled
+
   .row.frame
     .row.mb-3(v-if="disabled.status")
       strong Awaiting {{ disabled.cause }}... &nbsp;
