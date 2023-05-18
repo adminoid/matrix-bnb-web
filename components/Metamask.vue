@@ -2,12 +2,9 @@
 .container
 
   .row.frame
-    .row.mb-3
-      .col.col-sm-6 Add bsc network (if not exist) and set that active
-
-      .col.col-sm-6.mb-3(v-if="disabled.disabled")
-        strong Awaiting {{ disabled.cause }}... &nbsp;
-        .spinner-border.ms-auto.text-primary(role="status")
+    .row.mb-3(v-if="disabled.status")
+      strong Awaiting {{ disabled.cause }}... &nbsp;
+        span.spinner-border.ms-auto.text-warning(role="status")
 
     .mb-3.row(v-if="connectedWallet")
       .debug-panel Connected wallet: {{ connectedWallet }}
@@ -17,9 +14,16 @@
         button.mb-3.w-100(
           type="button"
           class="btn btn-outline-success"
-          @click="B.connect"
-          :disabled="disabled.disabled"
+          @click="connectWallet"
+          :disabled="disabled.status"
         ) Connect Metamask
+      .col
+        button.mb-3.w-100(
+          type="button"
+          class="btn btn-outline-success"
+          @click="disconnectWallet"
+          :disabled="disabled.status"
+        ) Disconnect Metamask
 
   .row.frame.frame_info(v-if="alerts.length > 0")
     .row
@@ -64,14 +68,14 @@
           input#register-whose.form-control.col-4(
             type='text'
             v-model="registerWhoseAddr"
-            :disabled="disabled.disabled"
+            :disabled="disabled.status"
           )
     .row
       button(
         type="button"
         class="btn btn-outline-success"
         @click="registerWhose"
-        :disabled="disabled.disabled"
+        :disabled="disabled.status"
       ) Register
 
   .row.frame
@@ -83,14 +87,14 @@
           input#withdraw-claim.form-control.col-4(
             type='text'
             v-model="withdrawClaimAmount"
-            :disabled="disabled.disabled"
+            :disabled="disabled.status"
           )
     .row
       button(
         type="button"
         class="btn btn-outline-primary"
         @click="withdrawClaim"
-        :disabled="disabled.disabled"
+        :disabled="disabled.status"
       ) Withdraw claim (amount)
 
   .row.frame
@@ -102,14 +106,14 @@
           input#user-core.form-control.col-4(
             type='text'
             v-model="userCoreAddress"
-            :disabled="disabled.disabled"
+            :disabled="disabled.status"
           )
     .row
       button(
         type="button"
         class="btn btn-outline-warning"
         @click="getCoreUser"
-        :disabled="disabled.disabled"
+        :disabled="disabled.status"
       ) Get Core user
 
   .row.frame
@@ -121,7 +125,7 @@
           input#user-matrix.form-control.col-4(
             type='text'
             v-model="userMatrixAddress"
-            :disabled="disabled.disabled"
+            :disabled="disabled.status"
           )
     .mb-3.row
       .col.col-sm-3.mb-3
@@ -131,14 +135,14 @@
           input#matrix-level.form-control.col-4(
             type='text'
             v-model="userMatrixLevel"
-            :disabled="disabled.disabled"
+            :disabled="disabled.status"
           )
     .row
       button(
         type="button"
         class="btn btn-outline-warning"
         @click="getMatrixUser"
-        :disabled="disabled.disabled"
+        :disabled="disabled.status"
       ) Get Matrix user
 
   .row.frame
@@ -152,14 +156,14 @@
           input#send-bnb.form-control.col-4(
             type='text'
             v-model="sendBnbAmount"
-            :disabled="disabled.disabled"
+            :disabled="disabled.status"
           )
     .row
       button(
         type="button"
         class="btn btn-outline-danger"
         @click="sendBnb"
-        :disabled="disabled.disabled"
+        :disabled="disabled.status"
       ) Send BNB (amount)
 
   .row.frame
@@ -170,7 +174,7 @@
         type="button"
         class="btn btn-outline-danger"
         @click="B.withdrawTen"
-        :disabled="disabled.disabled"
+        :disabled="disabled.status"
       ) Withdraw
 
 .end-space
@@ -205,6 +209,14 @@ const getMatrixUser = async () => {
 }
 
 const connectedWallet = ref('')
+const connectWallet = async () => {
+  await B.connect()
+  connectedWallet.value = B.Accounts[0]
+}
+const disconnectWallet = async () => {
+  await B.disconnect()
+  connectedWallet.value = ''
+}
 
 onMounted(async () => {
   // await $SC.MSI.connectWallet()
@@ -214,16 +226,23 @@ onMounted(async () => {
   //   alerts.value.push({type: 'danger', message: "Установите metamask!"})
   // }
 
-  B.Ethereum.on("accountsChanged", async (accountsPassed) => {
-    // console.info("...accountsChanged")
-    // console.info(accountsPassed)
-    // Time to reload your interface with accounts[0]!
-    const accounts = await B.Web3.eth.getAccounts();
-    // accounts = await web3.eth.getAccounts();
-    // console.info("account has changed")
-    connectedWallet.value = accounts[0]
-    // console.log(connectedWallet.value)
-  })
+  if (B.Ethereum) {
+    B.Ethereum.on("accountsChanged", async (accountsPassed) => {
+      // console.info("...accountsChanged")
+      // console.info(accountsPassed)
+      // Time to reload your interface with accounts[0]!
+      const accounts = await B.Web3.eth.getAccounts();
+      // accounts = await web3.eth.getAccounts();
+      // console.info("account has changed")
+      connectedWallet.value = accounts[0]
+      // console.log(connectedWallet.value)
+    })
+  } else {
+    disabled.value = {
+      cause: 'Please install Metamask and reload the page',
+      status: true,
+    }
+  }
 })
 
 // const prepareMetamask = async () =>
@@ -254,7 +273,7 @@ $on('alert', ({type, message}) => {
   // setTimeout(() => (error.value = ''), errorTimeout)
 })
 
-$on('disabled', (payload: { cause: string, disabled: boolean }) => {
+$on('disabled', (payload: { cause: string, status: boolean }) => {
   // console.info('on disabled', payload)
   disabled.value = payload
 })
@@ -308,4 +327,9 @@ const closeAlert = (index) => {
   border-radius: 2px
 .end-space
   height: 800px
+.spinner-border
+  width: 20px
+  height: 20px
+  position: relative
+  top: 3px
 </style>

@@ -50,9 +50,9 @@ class Common implements ICommon {
     this.Config = new Config()['public']
     this.Core = new CoreContract(this.Web3, this.Config.CONTRACT_ADDRESS)
   }
-  EmitDisabled (type: string, status: boolean) {
+  EmitDisabled (cause: string, status: boolean) {
     this.Nuxt.$emit('disabled', {
-      type,
+      cause,
       status,
     })
     // this.Ethereum.methods()
@@ -132,8 +132,8 @@ export class External extends Network implements IExternal {
   @disableWhile()
   async connect (): Promise<void> {
     console.info("CoNnEcT")
-    console.log(this.Config)
-    console.log(this.Config.CONTRACT_ADDRESS)
+    // console.log(this.Config)
+    // console.log(this.Config.CONTRACT_ADDRESS)
     this.EmitDisabled('connect', true)
     await this.setNetwork()
     try {
