@@ -5,22 +5,14 @@ import {
   ICommon, IExternal, INetwork
 } from '~/libs/blockchain/types'
 import CoreJson from '~/contracts/Core.sol/Core.json'
-import { useNuxtApp } from '#app'
-
-console.log(useNuxtApp)
-console.log(useNuxtApp())
-console.log(useNuxtApp)
-console.log(useNuxtApp())
-console.log(useNuxtApp)
-console.log(useNuxtApp())
 
 class Config {
   private static _instance: any
-  CONTRACT_ADDRESS: string;
-  CHAIN_ID: string;
-  CHAIN_NAME: string;
+  CONTRACT_ADDRESS: string
+  CHAIN_ID: string
+  CHAIN_NAME: string
   RPC_URL: string;
-  CURRENCY: TCurrency;
+  CURRENCY: TCurrency
   constructor() {
     if (!Config._instance) {
       Config._instance = useRuntimeConfig()
@@ -51,9 +43,9 @@ class Common implements ICommon {
   Config
   Accounts
   Core
-  constructor () {
-    this.Nuxt = useNuxtApp()
-    this.Ethereum = getGlobalThis().ethereum
+  constructor (nuxt, globalThis) {
+    this.Nuxt = nuxt
+    this.Ethereum = globalThis['ethereum']
     this.Web3 = new Web3(this.Ethereum)
     this.Config = new Config()
     this.Core = new CoreContract(this.Web3, this.Config.CONTRACT_ADDRESS)
@@ -66,14 +58,15 @@ class Common implements ICommon {
     this.Ethereum.methods()
   }
   ThrowAlert (type: string, error: any) {
-    let message = error
+    let message: any = error
     // only for error messages
     if (
       type === 'danger'
       && typeof error === 'string'
       && error.includes('reverted with reason string')
     ) {
-        message = error.match(/transaction:\s(.+?)"/)[1]
+      // @ts-ignore
+      message = error.match(/transaction:\s(.+?)"/)[1]
     }
     this.Nuxt.$emit('alert', {
       type,
@@ -83,6 +76,7 @@ class Common implements ICommon {
 }
 
 class Network extends Common implements INetwork {
+  constructor (nuxt, globalThis) {super(nuxt, globalThis)}
   private checkInstalledMetamask (): boolean {
     return Boolean(this.Ethereum && this.Ethereum.isMetaMask);
   }
@@ -134,6 +128,7 @@ function disableWhile() {
 }
 
 export class External extends Network implements IExternal {
+  constructor (nuxt, globalThis) {super(nuxt, globalThis)}
   @disableWhile()
   async connect (): Promise<void> {
     console.info("CoNnEcT")

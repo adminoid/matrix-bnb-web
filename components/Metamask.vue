@@ -179,9 +179,12 @@
 
 <script lang="ts" setup>
 
-import { Blockchain as B } from '~/libs/blockchain'
 import { useNuxtApp } from '#app'
 import { ref, onMounted } from 'vue'
+import { External } from '~/libs/blockchain/classes.ts'
+import { getGlobalThis } from '@vue/shared'
+
+const B = new External(useNuxtApp(), getGlobalThis())
 
 const { $on } = useNuxtApp()
 
