@@ -208,23 +208,22 @@ const connectedWallet = ref('')
 
 onMounted(async () => {
   // await $SC.MSI.connectWallet()
-
-  connectedWallet.value = B.Accounts[0]
+  if (B.Accounts && B.Accounts.length > 0) connectedWallet.value = B.Accounts[0]
 
   // if (!$SC.MSI.web3) {
   //   alerts.value.push({type: 'danger', message: "Установите metamask!"})
   // }
 
-  // B.Ethereum.on("accountsChanged", async (accountsPassed) => {
-  //   // console.info("...accountsChanged")
-  //   // console.info(accountsPassed)
-  //   // Time to reload your interface with accounts[0]!
-  //   const accounts = await $SC.MSI.web3.eth.getAccounts();
-  //   // accounts = await web3.eth.getAccounts();
-  //   // console.info("account has changed")
-  //   connectedWallet.value = accounts[0]
-  //   // console.log(connectedWallet.value)
-  // })
+  B.Ethereum.on("accountsChanged", async (accountsPassed) => {
+    // console.info("...accountsChanged")
+    // console.info(accountsPassed)
+    // Time to reload your interface with accounts[0]!
+    const accounts = await B.Web3.eth.getAccounts();
+    // accounts = await web3.eth.getAccounts();
+    // console.info("account has changed")
+    connectedWallet.value = accounts[0]
+    // console.log(connectedWallet.value)
+  })
 })
 
 // const prepareMetamask = async () =>
