@@ -1,4 +1,34 @@
 <template lang="pug">
+.alerts(v-if="alerts && alerts.length > 0")
+  .row
+    .alert(
+      v-for="(alert, index) in alerts"
+      :class="'alert-'+alert.type+' d-flex'"
+      role="alert"
+    )
+      svg(
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="currentColor"
+        class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2"
+        viewBox="0 0 16 16"
+        role="img"
+        aria-label="Warning:"
+      )
+        path(
+          :d="getPathByAlertType(alert.type)"
+        )
+      pre {{ alert.num }}) {{ alert.message }}
+      button(
+        style="margin-left: auto"
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+        @click="closeAlert(index)"
+      )
+
 .container
 
   .row.frame
@@ -24,38 +54,6 @@
           @click="disconnectWallet"
           :disabled="disabled.status"
         ) Disconnect Metamask
-
-  .row.frame.frame_info(v-if="alerts.length > 0")
-    .row
-      .alert(
-        v-for="(alert, index) in alerts"
-        :class="'alert-'+alert.type+' d-flex'"
-        role="alert"
-      )
-        svg(
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="currentColor"
-          class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2"
-          viewBox="0 0 16 16"
-          role="img"
-          aria-label="Warning:"
-        )
-          path(
-            :d="getPathByAlertType(alert.type)"
-          )
-        pre {{ alert.message }}
-        button(
-          style="margin-left: auto"
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-          @click="closeAlert(index)"
-        )
-  .row.frame.frame_info.frame_no-padding.d-flex(v-else)
-    .row.alert.justify-content-center No messages yet...
 
   .row.frame
     .mb-3.row(v-if="registerWhoseAddr")
@@ -219,12 +217,7 @@ const disconnectWallet = async () => {
 }
 
 onMounted(async () => {
-  // await $SC.MSI.connectWallet()
   if (B.Accounts && B.Accounts.length > 0) connectedWallet.value = B.Accounts[0]
-
-  // if (!$SC.MSI.web3) {
-  //   alerts.value.push({type: 'danger', message: "Установите metamask!"})
-  // }
 
   if (B.Ethereum) {
     B.Ethereum.on("accountsChanged", async (accountsPassed) => {
@@ -268,7 +261,8 @@ const sendBnb = async () =>
 const alerts = ref([])
 
 $on('alert', ({type, message}) => {
-  alerts.value.push({type, message})
+  const num = alerts.value.length
+  alerts.value.push({num, type, message})
   // error.value = msg
   // setTimeout(() => (error.value = ''), errorTimeout)
 })
@@ -299,22 +293,25 @@ const closeAlert = (index) => {
 <style lang="sass" scoped>
 .container
   padding: 1em
+.alerts
+  position: fixed
+  bottom: 20px
+  right: 20px
+  opacity: .7
+  width: 325px
+  z-index: 100
+  .alert
+    border-color: #0a53be
+    padding: 5px
+    pre
+      padding-bottom: 15px
+      margin-bottom: 0
+
 .frame
   border: 2px solid lightgrey
   border-radius: 1em
   padding: 1em
   margin-top: 2em !important
-  &_info
-    border-color: #0a53be
-    padding-bottom: 0
-    .row
-      padding: 0
-    .alert
-      padding: 10px
-      pre
-        padding-top: 0.2rem
-        padding-left: 0.2rem
-        margin-bottom: 0
   &_no-padding
     padding: 0
     border-color: rgba(10, 83, 190, 0.42)
