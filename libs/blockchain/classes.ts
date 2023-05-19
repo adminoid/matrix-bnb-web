@@ -67,6 +67,8 @@ class Common implements ICommon {
     ) {
       // @ts-ignore
       message = error.match(/transaction:\s(.+?)"/)[1]
+    } else if (error.includes('this.Accounts is undefined')) {
+      message = "Connect Metamask first"
     }
     this.Nuxt.$emit('alert', {
       type,

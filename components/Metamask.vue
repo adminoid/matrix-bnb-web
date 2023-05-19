@@ -162,6 +162,7 @@ alerts
 </template>
 
 <script lang="ts" setup>
+// todo: create checking fields, not empty
 
 import { useNuxtApp } from '#app'
 import { ref, onMounted } from 'vue'
