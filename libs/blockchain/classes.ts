@@ -1,4 +1,3 @@
-import { getGlobalThis } from '@vue/shared'
 import Web3 from 'web3'
 import {
   TCurrency,
@@ -50,12 +49,12 @@ class Common implements ICommon {
     this.Config = new Config()['public']
     this.Core = new CoreContract(this.Web3, this.Config.CONTRACT_ADDRESS)
   }
+
   EmitDisabled (cause: string, status: boolean) {
     this.Nuxt.$emit('disabled', {
       cause,
       status,
     })
-    // this.Ethereum.methods()
   }
   ThrowAlert (type: string, error: any) {
     let message: any = error
@@ -83,22 +82,23 @@ class Network extends Common implements INetwork {
     return Boolean(this.Ethereum && this.Ethereum.isMetaMask);
   }
   async setNetwork (): Promise<void> {
-    if (!this.checkInstalledMetamask()) {
+    if (!this.checkInstalledMetamask() || !this.Ethereum) {
       this.ThrowAlert('danger', 'Metamask is not installed!')
-    }
-    try {
-      // check if the chain that for connect to is installed
-      await this.Ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: this.Config.CHAIN_ID }],
-      })
-    } catch (e) {
-      // This error code indicates that the chain has not been added to MetaMask
-      // if it is not, then install it into the user MetaMask
-      if (e.code === 4902) {
-        await this.addNetwork()
-      } else {
-        this.ThrowAlert('danger', e.message)
+    } else {
+      try {
+        // check if the chain that for connect to is installed
+        await this.Ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: this.Config.CHAIN_ID }],
+        })
+      } catch (e) {
+        // This error code indicates that the chain has not been added to MetaMask
+        // if it is not, then install it into the user MetaMask
+        if (e.code === 4902) {
+          await this.addNetwork()
+        } else {
+          this.ThrowAlert('danger', e.message)
+        }
       }
     }
   }

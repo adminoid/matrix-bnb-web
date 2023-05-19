@@ -1,23 +1,9 @@
 <template lang="pug">
 alerts
+
 .container
 
-  .row.frame.border-success
-    .row.mb-3(v-if="disabled.status")
-      strong Awaiting {{ disabled.cause }}... &nbsp;
-        span.spinner-border.ms-auto.text-warning(role="status")
-
-    .mb-3.row(v-if="connectedWallet")
-      .debug-panel Connected wallet: {{ connectedWallet }}
-
-    .row
-      .col
-        button.mb-3.w-100(
-          type="button"
-          class="btn btn-outline-success"
-          @click="connectWallet"
-          :disabled="disabled.status"
-        ) Connect Metamask
+  connect
 
 .container
   ul.nav.nav-tabs.mt-2
@@ -158,12 +144,13 @@ alerts
 // todo: create checking fields, not empty
 
 import { useNuxtApp } from '#app'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import Alerts from '~/components/Alerts.vue'
+import Connect from '~/components/Connect.vue'
 
-const { $on, $Blockchain } = useNuxtApp()
+const { $Blockchain } = useNuxtApp()
 
-let disabled = ref({})
+let disabled = ref({cause: '', status: false})
 const registerWhoseAddr = ref('')
 const sendBnbAmount = ref('')
 const withdrawClaimAmount = ref('')
@@ -179,29 +166,6 @@ const getMatrixUser = async () => {
   await $Blockchain.getMatrixUser(userMatrixLevel.value, userMatrixAddress.value)
 }
 
-const connectedWallet = ref('')
-const connectWallet = async () => {
-  await $Blockchain.connect()
-  connectedWallet.value = $Blockchain.Accounts[0]
-}
-
-onMounted(async () => {
-  if ($Blockchain.Accounts && $Blockchain.Accounts.length > 0) connectedWallet.value = $Blockchain.Accounts[0]
-
-  if ($Blockchain.Ethereum) {
-    $Blockchain.Ethereum.on("accountsChanged", async (accountsPassed) => {
-      // Time to reload your interface with accounts[0]!
-      const accounts = await $Blockchain.Web3.eth.getAccounts();
-      connectedWallet.value = accounts[0]
-    })
-  } else {
-    disabled.value = {
-      cause: 'Please install Metamask and reload the page',
-      status: true,
-    }
-  }
-})
-
 const registerWhose = async () =>
     (await $Blockchain.registerWhose(registerWhoseAddr.value))
 
@@ -211,10 +175,6 @@ const withdrawClaim = async () =>
 const sendBnb = async () =>
     (await $Blockchain.sendBnb(sendBnbAmount.value))
 
-$on('disabled', (payload: { cause: string, status: boolean }) => {
-  // console.info('on disabled', payload)
-  disabled.value = payload
-})
 </script>
 
 <style lang="sass" scoped>
