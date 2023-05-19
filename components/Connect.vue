@@ -2,10 +2,10 @@
 .row.frame.border-success
   .row.mb-3(v-if="disabled.status")
     strong Awaiting: {{ disabled.cause }}... &nbsp;
-      span.spinner-border.ms-auto.text-warning(role="status")
+      span.spinner-border.ms-auto(role="status")
 
   .mb-3.row(v-if="connectedWallet")
-    .debug-panel Connected wallet: {{ connectedWallet }}
+    .debug-panel Connected wallet: <span class="debug-panel__wallet">{{ connectedWallet }}</span>
 
   .row
     .col
@@ -22,11 +22,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useNuxtApp } from '#app'
 import { useDisabled } from '~/composables/useDisabled'
 
-// console.log(useDisabled)
-
 const disabled = useDisabled()
-// const disabled = reactive({cause: '', status: false})
-
 const { $Blockchain } = useNuxtApp()
 
 const connectedWallet = ref('')
@@ -37,23 +33,33 @@ const connectWallet = async () => {
 }
 
 onMounted(async () => {
-  if ($Blockchain.Accounts && $Blockchain.Accounts.length > 0) connectedWallet.value = $Blockchain.Accounts[0]
-
   if ($Blockchain.Ethereum) {
     const accounts = await $Blockchain.Web3.eth.getAccounts()
     if (accounts.length > 0) {
       connectedWallet.value = accounts[0]
+    } else {
+      $Blockchain.Nuxt.$emit('alert', {
+        type: 'danger',
+        message: 'Please connect Metamask',
+      })
     }
     $Blockchain.Ethereum.on("accountsChanged", async (accountsPassed) => {
-      // Time to reload your interface with accounts[0]!
-      const accounts = await $Blockchain.Web3.eth.getAccounts()
-      connectedWallet.value = accounts[0]
+      connectedWallet.value = accountsPassed[0]
     })
   } else {
-    disabled.value = {
+    $Blockchain.Nuxt.$emit('disabled', {
       cause: 'Please install Metamask and reload the page',
       status: true,
-    }
+    })
   }
 })
 </script>
+
+<style lang="sass">
+.debug-panel
+  &__wallet
+    color: #6610f2
+.spinner-border
+  --bs-spinner-width: 1.5rem
+  --bs-spinner-height: 1.5rem
+</style>

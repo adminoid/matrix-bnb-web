@@ -37,28 +37,26 @@ const { $Blockchain } = useNuxtApp()
 const registerWhoseAddr = ref('')
 const error = ref('')
 watch(registerWhoseAddr, async (newValue) => {
-  // console.log($Blockchain.Accounts)
-  // todo:
-  //  0) Returned values aren't valid, did it run Out of Gas? You might also see this error if you are not using the correct ABI for the contract you are retrieving data from, requesting data from a block number that does not exist, or querying a node which is not fully synced.
-  // 0) No "from" address specified in neither the given options, nor the default options.
+  await validateValue(newValue)
+})
+
+const validateValue = async (value) => {
   const accounts = await $Blockchain.Web3.eth.getAccounts();
-
-  console.log(accounts[0])
-
-  if (!accounts) {
+  if (!accounts || !$Blockchain.Wallet) {
     error.value = 'Please connect your wallet first'
   } else {
-    if (!Web3.utils.isAddress(newValue)) {
+    if (!Web3.utils.isAddress(value)) {
       error.value = 'please enter valid ethereum address'
-    } else if (newValue.toLowerCase() === $Blockchain.Wallet.toLowerCase()) {
+    } else if (value.toLowerCase() === $Blockchain.Wallet.toLowerCase()) {
       error.value = 'Is not possible to be whose to yourself'
     } else {
       error.value = ''
     }
   }
-})
+}
 
 const registerWhose = async () => {
+  await validateValue(registerWhoseAddr.value)
   if (!error.value) {
     await $Blockchain.registerWhose(registerWhoseAddr.value)
   }
