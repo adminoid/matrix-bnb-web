@@ -16,26 +16,7 @@ alerts
     li.nav-item
       a.nav-link.disabled Disabled
 
-  .row.frame.frame_no-top
-    .mb-3.row(v-if="registerWhoseAddr")
-      .debug-panel {{ registerWhoseAddr }}
-    .mb-3.row
-      .col.col-sm-3.mb-3
-        label.col-form-label(for='register-whose') Register whose
-      .col-sm-9.mb-3
-        .input-group
-          input#register-whose.form-control.col-4(
-            type='text'
-            v-model="registerWhoseAddr"
-            :disabled="disabled.status"
-          )
-    .row
-      button(
-        type="button"
-        class="btn btn-outline-success"
-        @click="registerWhose"
-        :disabled="disabled.status"
-      ) Register
+  panel-whose
 
   .row.frame
     .mb-3.row
@@ -144,14 +125,19 @@ alerts
 // todo: create checking fields, not empty
 
 import { useNuxtApp } from '#app'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Alerts from '~/components/Alerts.vue'
 import Connect from '~/components/Connect.vue'
+import PanelWhose from '~/components/PanelWhose.vue'
 
 const { $Blockchain } = useNuxtApp()
 
+onMounted(async () => {
+  await $Blockchain.init()
+})
+
 let disabled = ref({cause: '', status: false})
-const registerWhoseAddr = ref('')
+
 const sendBnbAmount = ref('')
 const withdrawClaimAmount = ref('')
 
@@ -165,9 +151,6 @@ const userMatrixAddress = ref('')
 const getMatrixUser = async () => {
   await $Blockchain.getMatrixUser(userMatrixLevel.value, userMatrixAddress.value)
 }
-
-const registerWhose = async () =>
-    (await $Blockchain.registerWhose(registerWhoseAddr.value))
 
 const withdrawClaim = async () =>
     (await $Blockchain.withdrawClaim(withdrawClaimAmount.value))

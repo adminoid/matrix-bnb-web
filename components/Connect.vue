@@ -1,6 +1,5 @@
 <template lang="pug">
 .row.frame.border-success
-  pre {{ disabled }}
   .row.mb-3(v-if="disabled.status")
     strong Awaiting: {{ disabled.cause }}... &nbsp;
       span.spinner-border.ms-auto.text-warning(role="status")
@@ -34,22 +33,20 @@ const connectedWallet = ref('')
 const connectWallet = async () => {
   console.info('connectWallet()...')
   await $Blockchain.connect()
-  connectedWallet.value = $Blockchain.Accounts[0]
+  connectedWallet.value = $Blockchain.Wallet
 }
-
-// todo: disabled not work when connecting wallet
-
-const wallet = computed(() => {
-  return ($Blockchain.Accounts) ? $Blockchain.Accounts[0] : ''
-})
 
 onMounted(async () => {
   if ($Blockchain.Accounts && $Blockchain.Accounts.length > 0) connectedWallet.value = $Blockchain.Accounts[0]
 
   if ($Blockchain.Ethereum) {
+    const accounts = await $Blockchain.Web3.eth.getAccounts()
+    if (accounts.length > 0) {
+      connectedWallet.value = accounts[0]
+    }
     $Blockchain.Ethereum.on("accountsChanged", async (accountsPassed) => {
       // Time to reload your interface with accounts[0]!
-      const accounts = await $Blockchain.Web3.eth.getAccounts();
+      const accounts = await $Blockchain.Web3.eth.getAccounts()
       connectedWallet.value = accounts[0]
     })
   } else {
@@ -58,10 +55,5 @@ onMounted(async () => {
       status: true,
     }
   }
-
-  // watchEffect(() => {
-  //   disabled.value = $Blockchain.disabled
-  // })
-
 })
 </script>

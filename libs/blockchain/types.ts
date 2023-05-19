@@ -42,7 +42,7 @@ export interface ICommon {
   Web3: Web3
   Config: any
   Core: any
-  Accounts: any[]
+  Wallet: string
   EmitDisabled(type: string, status: boolean)
   ThrowAlert(type: string, error: any)
 }

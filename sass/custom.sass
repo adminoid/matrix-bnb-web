@@ -52,3 +52,8 @@ $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value")
 .frame_info
   .btn-close
     min-width: 17px
+
+.alerts
+  @include media-breakpoint-down(xs)
+    width: 80%
+    max-width: 80%

@@ -19,7 +19,7 @@
         path(
           :d="getPathByAlertType(alert.type)"
         )
-      pre {{ alert.num }}) {{ alert.message }}
+      span {{ alert.num }}. {{ alert.message }}
       button(
         style="margin-left: auto"
         type="button"
@@ -68,13 +68,15 @@ const getPathByAlertType = (type) => {
   position: fixed
   bottom: 20px
   right: 20px
-  opacity: .7
-  width: 325px
+  opacity: .6
+  max-width: 659px
   z-index: 100
   .alert
-    border-color: #0a53be
-    padding: 5px
-    pre
-      padding-bottom: 15px
-      margin-bottom: 0
+    padding: 8px !important
+    right: 30px
+    bottom: 3px
+    &.alert-danger
+      border-color: #AB666B
+    &.alert-success
+      border-color: #5F8670
 </style>
