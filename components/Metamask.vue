@@ -146,7 +146,7 @@ alerts
       button(
         type="button"
         class="btn btn-outline-danger"
-        @click="B.withdrawTen"
+        @click="$Blockchain.withdrawTen"
         :disabled="disabled.status"
       ) Withdraw
 
@@ -159,13 +159,9 @@ alerts
 
 import { useNuxtApp } from '#app'
 import { ref, onMounted } from 'vue'
-import { External } from '~/libs/blockchain/classes.ts'
-import { getGlobalThis } from '@vue/shared'
 import Alerts from '~/components/Alerts.vue'
 
-const B = new External(useNuxtApp(), getGlobalThis())
-
-const { $on } = useNuxtApp()
+const { $on, $Blockchain } = useNuxtApp()
 
 let disabled = ref({})
 const registerWhoseAddr = ref('')
@@ -174,28 +170,28 @@ const withdrawClaimAmount = ref('')
 
 const userCoreAddress = ref('')
 const getCoreUser = async () => {
-  await B.getCoreUser(userCoreAddress.value)
+  await $Blockchain.getCoreUser(userCoreAddress.value)
 }
 
 const userMatrixLevel = ref('')
 const userMatrixAddress = ref('')
 const getMatrixUser = async () => {
-  await B.getMatrixUser(userMatrixLevel.value, userMatrixAddress.value)
+  await $Blockchain.getMatrixUser(userMatrixLevel.value, userMatrixAddress.value)
 }
 
 const connectedWallet = ref('')
 const connectWallet = async () => {
-  await B.connect()
-  connectedWallet.value = B.Accounts[0]
+  await $Blockchain.connect()
+  connectedWallet.value = $Blockchain.Accounts[0]
 }
 
 onMounted(async () => {
-  if (B.Accounts && B.Accounts.length > 0) connectedWallet.value = B.Accounts[0]
+  if ($Blockchain.Accounts && $Blockchain.Accounts.length > 0) connectedWallet.value = $Blockchain.Accounts[0]
 
-  if (B.Ethereum) {
-    B.Ethereum.on("accountsChanged", async (accountsPassed) => {
+  if ($Blockchain.Ethereum) {
+    $Blockchain.Ethereum.on("accountsChanged", async (accountsPassed) => {
       // Time to reload your interface with accounts[0]!
-      const accounts = await B.Web3.eth.getAccounts();
+      const accounts = await $Blockchain.Web3.eth.getAccounts();
       connectedWallet.value = accounts[0]
     })
   } else {
@@ -207,13 +203,13 @@ onMounted(async () => {
 })
 
 const registerWhose = async () =>
-    (await B.registerWhose(registerWhoseAddr.value))
+    (await $Blockchain.registerWhose(registerWhoseAddr.value))
 
 const withdrawClaim = async () =>
-    (await B.withdrawClaim(withdrawClaimAmount.value))
+    (await $Blockchain.withdrawClaim(withdrawClaimAmount.value))
 
 const sendBnb = async () =>
-    (await B.sendBnb(sendBnbAmount.value))
+    (await $Blockchain.sendBnb(sendBnbAmount.value))
 
 $on('disabled', (payload: { cause: string, status: boolean }) => {
   // console.info('on disabled', payload)
