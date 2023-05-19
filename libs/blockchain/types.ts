@@ -19,8 +19,6 @@ export type TCurrency = {
 export interface IExternal {
   // technical methods
   connect(): Promise<void>
-  disconnect(): Promise<void>
-
   // info methods
   getCoreUser(wallet: string): Promise<void>
   getMatrixUser(level: number|string, wallet: string): Promise<void>

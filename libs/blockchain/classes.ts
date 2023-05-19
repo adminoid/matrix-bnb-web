@@ -146,27 +146,6 @@ export class External extends Network implements IExternal {
       this.EmitDisabled('connect', false)
     }
   }
-  async disconnect (): Promise<void> {
-    this.EmitDisabled('disconnect', false)
-    try {
-      await this.Ethereum.request({
-        method: "wallet_requestPermissions",
-        params: [
-          {
-            eth_accounts: {}
-          }
-        ]
-      });
-      // await this.Ethereum.request({
-      //   method: "eth_requestAccounts",
-      //   params: [{eth_accounts: {}}]
-      // })
-    } catch (e) {
-      this.ThrowAlert('danger', e.message)
-    } finally {
-      this.EmitDisabled('disconnect', false)
-    }
-  }
 
   async getCoreUser (wallet: string): Promise<void> {
     if (this.Accounts && this.Accounts.length < 1) {

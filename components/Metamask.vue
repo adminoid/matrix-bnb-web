@@ -18,13 +18,6 @@ alerts
           @click="connectWallet"
           :disabled="disabled.status"
         ) Connect Metamask
-      .col
-        button.mb-3.w-100(
-          type="button"
-          class="btn btn-outline-success"
-          @click="disconnectWallet"
-          :disabled="disabled.status"
-        ) Disconnect Metamask
 
 .container
   ul.nav.nav-tabs.mt-2
@@ -194,10 +187,6 @@ const connectedWallet = ref('')
 const connectWallet = async () => {
   await B.connect()
   connectedWallet.value = B.Accounts[0]
-}
-const disconnectWallet = async () => {
-  await B.disconnect()
-  connectedWallet.value = ''
 }
 
 onMounted(async () => {

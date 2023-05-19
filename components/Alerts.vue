@@ -34,7 +34,7 @@
 import type { PropType } from 'vue'
 import { ref } from 'vue'
 import { useNuxtApp } from '#app'
-import type { TAlert } from '~/types/Alerts'
+import type { TAlert } from '~/types'
 
 const props = defineProps({
   alerts: {
