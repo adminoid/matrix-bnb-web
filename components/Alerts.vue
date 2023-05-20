@@ -19,7 +19,7 @@
         path(
           :d="getPathByAlertType(alert.type)"
         )
-      span {{ alert.num }}. {{ alert.message }}
+      pre {{ alert.num }}. {{ alert.message }}
       button(
         style="margin-left: auto"
         type="button"

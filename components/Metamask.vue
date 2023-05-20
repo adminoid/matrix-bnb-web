@@ -18,24 +18,7 @@ alerts
 
   panel-whose
 
-  .row.frame
-    .mb-3.row
-      .col.col-sm-3.mb-3
-        label.col-form-label(for='withdraw-claim') Withdraw claim (amount)
-      .col-sm-9.mb-3
-        .input-group
-          input#withdraw-claim.form-control.col-4(
-            type='text'
-            v-model="withdrawClaimAmount"
-            :disabled="disabled.status"
-          )
-    .row
-      button(
-        type="button"
-        class="btn btn-outline-primary"
-        @click="withdrawClaim"
-        :disabled="disabled.status"
-      ) Withdraw claim (amount)
+  panel-withdraw
 
   .row.frame
     .mb-3.row
@@ -122,13 +105,12 @@ alerts
 </template>
 
 <script lang="ts" setup>
-// todo: create checking fields, not empty
-
 import { useNuxtApp } from '#app'
 import { ref, onMounted } from 'vue'
 import Alerts from '~/components/Alerts.vue'
 import Connect from '~/components/Connect.vue'
 import PanelWhose from '~/components/PanelWhose.vue'
+import PanelWithdraw from '~/components/PanelWithdraw.vue'
 
 const { $Blockchain } = useNuxtApp()
 
@@ -139,7 +121,6 @@ onMounted(async () => {
 let disabled = ref({cause: '', status: false})
 
 const sendBnbAmount = ref('')
-const withdrawClaimAmount = ref('')
 
 const userCoreAddress = ref('')
 const getCoreUser = async () => {
@@ -151,9 +132,6 @@ const userMatrixAddress = ref('')
 const getMatrixUser = async () => {
   await $Blockchain.getMatrixUser(userMatrixLevel.value, userMatrixAddress.value)
 }
-
-const withdrawClaim = async () =>
-    (await $Blockchain.withdrawClaim(withdrawClaimAmount.value))
 
 const sendBnb = async () =>
     (await $Blockchain.sendBnb(sendBnbAmount.value))

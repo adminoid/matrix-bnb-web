@@ -13,12 +13,12 @@
         type="button"
         class="btn btn-outline-success"
         @click="connectWallet"
-        :disabled="disabled.status"
-      ) Connect Metamask
+        :disabled="buttonDisabled"
+      ) {{ buttonText }}
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useNuxtApp } from '#app'
 import { useDisabled } from '~/composables/useDisabled'
 
@@ -27,32 +27,55 @@ const { $Blockchain } = useNuxtApp()
 
 const connectedWallet = ref('')
 const connectWallet = async () => {
-  console.info('connectWallet()...')
   await $Blockchain.connect()
-  connectedWallet.value = $Blockchain.Wallet
+  await checkConnected([$Blockchain.Wallet])
 }
 
+const buttonText = ref('Connect Metamask')
+const buttonDisabled = ref(false)
 onMounted(async () => {
-  if ($Blockchain.Ethereum) {
-    const accounts = await $Blockchain.Web3.eth.getAccounts()
-    if (accounts.length > 0) {
-      connectedWallet.value = accounts[0]
-    } else {
-      $Blockchain.Nuxt.$emit('alert', {
-        type: 'danger',
-        message: 'Please connect Metamask',
-      })
-    }
-    $Blockchain.Ethereum.on("accountsChanged", async (accountsPassed) => {
-      connectedWallet.value = accountsPassed[0]
-    })
-  } else {
+  $Blockchain.Ethereum.on("accountsChanged", async (accountsPassed) => {
+    await checkConnected(accountsPassed)
+  })
+})
+
+watch(connectedWallet, (value) => {
+  const accounts = (value) ? [value] : []
+  checkConnected(accounts)
+})
+
+const checkConnected = async (accounts) => {
+  // if mm is not installed
+  if (!$Blockchain.Ethereum) {
     $Blockchain.Nuxt.$emit('disabled', {
       cause: 'Please install Metamask and reload the page',
       status: true,
     })
+    buttonText.value = 'Install Metamask'
+    buttonDisabled.value = true
   }
-})
+  // if empty accounts
+  else if (
+    Array.isArray(accounts)
+    && accounts.length <= 0
+  ){
+    buttonText.value = 'Connect Metamask'
+    buttonDisabled.value = false
+    $Blockchain.Nuxt.$emit('disabled', {
+      cause: 'Please connect Metamask',
+      status: true,
+    })
+    connectedWallet.value = ''
+    buttonText.value = 'Connect Metamask'
+    buttonDisabled.value = false
+  }
+  // is ok
+  else {
+    connectedWallet.value = accounts[0]
+    buttonText.value = 'Metamask connected'
+    buttonDisabled.value = true
+  }
+}
 </script>
 
 <style lang="sass">
