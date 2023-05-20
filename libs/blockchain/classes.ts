@@ -127,21 +127,9 @@ class Network extends Common implements INetwork {
   }
 }
 
-function disableWhile() {
-  console.log("disableWhile(): factory evaluated")
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    console.log("disableWhile(): called")
-    console.log(target, propertyKey, descriptor)
-  }
-}
-
 export class External extends Network implements IExternal {
   constructor (nuxt, globalThis) {super(nuxt, globalThis)}
-  @disableWhile()
   async connect (): Promise<void> {
-    console.info("CoNnEcT")
-    // console.log(this.Config)
-    // console.log(this.Config.CONTRACT_ADDRESS)
     this.EmitDisabled('connect', true)
     await this.setNetwork()
     try {
@@ -277,7 +265,6 @@ TX: ${resp.transactionHash}
   }
   async sendAmount (amount: string | number): Promise<void> {
     this.EmitDisabled(`sendAmount`, true)
-    // todo: check allowance before approve
     try {
       const resp = await this.Web3.eth.sendTransaction({
         from: this.Wallet,
@@ -301,36 +288,13 @@ TX: ${resp.transactionHash}
   async withdrawTen (): Promise<void> {
     this.EmitDisabled(`withdrawTen`, true)
     try {
-      const tx = await this.Core.methods
+      await this.Core.methods
         .getTenPercentOnceYear()
-        // .call()
         .send({
           from: this.Wallet,
           gasLimit: 310000, // not required
-        }
-          ,(err, tx) => {
-              if (tx){
-                  console.log("it's ok")
-              }
-              if (err) {
-                  console.log(err)
-              }
-          }
-
-        )
-      // .catch(e => console.log('1084:', e))
-      // .on('error', (err, receipt) => {
-      //     console.log("err.message =",err.message);
-      //     console.log("receipt =", receipt);
-      // });
-      // .catch(revertReason => console.log({ revertReason }))
-
-      const resp = await tx()
-      console.dir(resp)
-
-      // console.dir(MSI.web3.utils.fromWei(resp, "ether"))
-
-      await this.ThrowAlert('success', resp)
+        })
+      await this.ThrowAlert('success', "check your balance")
 
     } catch (e) {
       await this.ThrowAlert('danger', e.message)
