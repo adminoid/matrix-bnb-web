@@ -16,6 +16,11 @@ export default <RouterConfig> {
       // })
     },
     {
+      name: 'w_main',
+      path: '/w/:w',
+      component: () => import('~/pages/w/_index.vue'),
+    },
+    {
       name: 'test',
       path: '/test',
       component: () => import('~/pages/test.vue')

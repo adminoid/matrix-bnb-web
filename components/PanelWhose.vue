@@ -1,7 +1,7 @@
 <template lang="pug">
 .row.frame.frame_no-top
   .mb-3.row(v-if="registerWhoseAddr")
-    .debug-panel {{ registerWhoseAddr }}
+    .debug-panel.text-success {{ registerWhoseAddr }}
   .mb-3.row
     .col.col-sm-3.mb-3
       label.col-form-label(for='register-whose') Register whose
@@ -11,7 +11,7 @@
           :class="{'is-invalid': !!error}"
           type='text'
           v-model="registerWhoseAddr"
-          :disabled="disabled.status"
+          :disabled="disabled.status || isDisabledWhoseInput"
           required
         )
         .invalid-feedback {{ error }}
@@ -25,12 +25,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useNuxtApp } from '#app'
 import { useDisabled } from '~/composables/useDisabled'
 import Web3 from 'web3'
 
-const disabled = useDisabled()
+const disabled = ref({cause: '', status: false})
+disabled.value = useDisabled()
 
 const { $Blockchain } = useNuxtApp()
 
@@ -62,6 +63,14 @@ const registerWhose = async () => {
   }
 }
 
+const isDisabledWhoseInput = ref(false)
+onMounted(async () => {
+  let whose = localStorage.getItem('whose_param')
+  if (whose) {
+    registerWhoseAddr.value = whose
+    isDisabledWhoseInput.value = true
+  }
+})
 </script>
 
 <style lang="sass">
