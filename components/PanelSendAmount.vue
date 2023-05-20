@@ -1,14 +1,16 @@
 <template lang="pug">
 .row.frame
   .mb-3.row
+    .fst-italic Same as just send bnb from wallet to contract address
+  .mb-3.row
     .col.col-sm-3.mb-3
-      label.col-form-label(for='withdraw-claim') Withdraw claim (amount)
+      label.col-form-label(for='send-amount') Send to contract
     .col-sm-9.mb-3
       .input-group
-        input#withdraw-claim.form-control.col-4(
+        input#send-amount.form-control.col-4(
           :class="{'is-invalid': !!error}"
           type='text'
-          v-model="withdrawClaimAmount"
+          v-model="amountValue"
           :disabled="disabled.status"
           required
         )
@@ -17,9 +19,9 @@
     button(
       type="button"
       class="btn btn-outline-primary"
-      @click="withdrawClaim"
+      @click="sendAmount"
       :disabled="disabled.status"
-    ) Withdraw claim
+    ) Send
 </template>
 
 <script lang="ts" setup>
@@ -30,9 +32,9 @@ import { useDisabled } from '~/composables/useDisabled'
 const disabled = useDisabled()
 const { $Blockchain } = useNuxtApp()
 
-const withdrawClaimAmount = ref('')
+const amountValue = ref('')
 const error = ref('')
-watch(withdrawClaimAmount, async (newValue) => {
+watch(amountValue, async (newValue) => {
   await validateValue(newValue)
 })
 
@@ -41,10 +43,9 @@ const validateValue = async (value) => {
   if (!accounts || !$Blockchain.Wallet) {
     error.value = 'Please connect your wallet first'
   } else {
-
     if (String(value).includes(',')) {
       value = String(value).replace(/,/g, '.')
-      withdrawClaimAmount.value = value
+      amountValue.value = value
     }
     if (isNaN(Number(value))) {
       error.value = 'please enter a valid number'
@@ -55,10 +56,11 @@ const validateValue = async (value) => {
     }
   }
 }
-const withdrawClaim = async () => {
-  await validateValue(withdrawClaimAmount.value)
+
+const sendAmount = async () => {
+  await validateValue(amountValue.value)
   if (!error.value) {
-    await $Blockchain.withdrawClaim(String(withdrawClaimAmount.value))
+    await $Blockchain.sendAmount(String(amountValue.value))
   }
 }
 </script>

@@ -6,16 +6,6 @@ export type TCurrency = {
   decimals: number,
 }
 
-// export type TAlert = {
-//   type: string,
-//   message: string,
-// }
-
-// type TDisabled = {
-//   cause: string,
-//   is: boolean,
-// }
-
 export interface IExternal {
   // technical methods
   connect(): Promise<void>
@@ -26,7 +16,7 @@ export interface IExternal {
   // interaction methods
   registerWhose(whose: string): Promise<void>
   withdrawClaim(amount: number | string): Promise<void>
-  sendBnb(amount: string|number): Promise<void>
+  sendAmount(amount: string|number): Promise<void>
   withdrawTen(): Promise<void>
 }
 

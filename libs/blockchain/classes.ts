@@ -273,6 +273,28 @@ TX: ${resp.transactionHash}
       this.EmitDisabled(`withdrawClaim`, false)
     }
   }
-  async sendBnb (amount: string | number): Promise<void> {}
+  async sendAmount (amount: string | number): Promise<void> {
+    this.EmitDisabled(`sendAmount`, true)
+    // todo: check allowance before approve
+    try {
+      const resp = await this.Web3.eth.sendTransaction({
+        from: this.Wallet,
+        to: this.Config.CONTRACT_ADDRESS,
+        value: this.Web3.utils.toWei(amount, "ether")
+      });
+      const msg = `
+sendAmount() method params:
+FROM: ${resp.from}
+TO: ${resp.to}
+GAS: ${resp.gasUsed}
+TX: ${resp.transactionHash}
+`
+      await this.ThrowAlert('success', msg)
+    } catch (e) {
+      await this.ThrowAlert('danger', e.message)
+    } finally {
+      this.EmitDisabled(`sendAmount`, false)
+    }
+  }
   async withdrawTen (): Promise<void> {}
 }

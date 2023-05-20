@@ -24,55 +24,7 @@ alerts
 
   panel-get-matrix-user
 
-  //.row.frame
-  //  .row
-  //    .col.col-sm-3.mb-3
-  //      label.col-form-label(for='user-matrix') User
-  //    .col-sm-9.mb-3
-  //      .input-group
-  //        input#user-matrix.form-control.col-4(
-  //          type='text'
-  //          v-model="userMatrixAddress"
-  //          :disabled="disabled.status"
-  //        )
-  //  .mb-3.row
-  //    .col.col-sm-3.mb-3
-  //      label.col-form-label(for='matrix-level') Matrix level
-  //    .col-sm-9.mb-3
-  //      .input-group
-  //        input#matrix-level.form-control.col-4(
-  //          type='text'
-  //          v-model="userMatrixLevel"
-  //          :disabled="disabled.status"
-  //        )
-  //  .row
-  //    button(
-  //      type="button"
-  //      class="btn btn-outline-warning"
-  //      @click="getMatrixUser"
-  //      :disabled="disabled.status"
-  //    ) Get Matrix user
-
-  .row.frame
-    .mb-3.row
-      .fst-italic Same as just send bnb from wallet to contract address
-    .mb-3.row
-      .col.col-sm-3.mb-3
-        label.col-form-label(for='send-bnb') Send BNB (amount)
-      .col-sm-9.mb-3
-        .input-group
-          input#send-bnb.form-control.col-4(
-            type='text'
-            v-model="sendBnbAmount"
-            :disabled="disabled.status"
-          )
-    .row
-      button(
-        type="button"
-        class="btn btn-outline-danger"
-        @click="sendBnb"
-        :disabled="disabled.status"
-      ) Send BNB (amount)
+  panel-send-amount
 
   .row.frame
     .mb-3.row

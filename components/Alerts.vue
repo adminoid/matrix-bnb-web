@@ -77,6 +77,9 @@ const getPathByAlertType = (type) => {
     opacity: .6
     &:hover
       opacity: 1
+    pre
+      margin-bottom: 0
+      padding-bottom: 1rem
     &.alert-danger
       border-color: #AB666B
     &.alert-success
