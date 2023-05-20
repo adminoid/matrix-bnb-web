@@ -71,6 +71,8 @@ const getPathByAlertType = (type) => {
   opacity: .6
   max-width: 659px
   z-index: 100
+  &:hover
+    opacity: 1
   .alert
     padding: 8px !important
     right: 30px
