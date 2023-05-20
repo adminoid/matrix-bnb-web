@@ -20,24 +20,26 @@ alerts
 
   panel-withdraw
 
-  .row.frame
-    .mb-3.row
-      .col.col-sm-3.mb-3
-        label.col-form-label(for='user-core') Get Core user
-      .col-sm-9.mb-3
-        .input-group
-          input#user-core.form-control.col-4(
-            type='text'
-            v-model="userCoreAddress"
-            :disabled="disabled.status"
-          )
-    .row
-      button(
-        type="button"
-        class="btn btn-outline-warning"
-        @click="getCoreUser"
-        :disabled="disabled.status"
-      ) Get Core user
+  panel-get-core-user
+
+  //.row.frame
+  //  .mb-3.row
+  //    .col.col-sm-3.mb-3
+  //      label.col-form-label(for='user-core') Get Core user
+  //    .col-sm-9.mb-3
+  //      .input-group
+  //        input#user-core.form-control.col-4(
+  //          type='text'
+  //          v-model="userCoreAddress"
+  //          :disabled="disabled.status"
+  //        )
+  //  .row
+  //    button(
+  //      type="button"
+  //      class="btn btn-outline-warning"
+  //      @click="getCoreUser"
+  //      :disabled="disabled.status"
+  //    ) Get Core user
 
   .row.frame
     .row
@@ -122,10 +124,10 @@ let disabled = ref({cause: '', status: false})
 
 const sendBnbAmount = ref('')
 
-const userCoreAddress = ref('')
-const getCoreUser = async () => {
-  await $Blockchain.getCoreUser(userCoreAddress.value)
-}
+// const userCoreAddress = ref('')
+// const getCoreUser = async () => {
+//   await $Blockchain.getCoreUser(userCoreAddress.value)
+// }
 
 const userMatrixLevel = ref('')
 const userMatrixAddress = ref('')
