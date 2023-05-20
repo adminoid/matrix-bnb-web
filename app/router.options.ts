@@ -25,5 +25,15 @@ export default <RouterConfig> {
       //   return r => r.default || r
       // })
     },
+    {
+      name: 'admin',
+      path: '/admin',
+      component: () => import('~/pages/admin.vue')
+      // .then((r) => {
+      //   console.info('R.')
+      //   console.log(r)
+      //   return r => r.default || r
+      // })
+    },
   ],
 }

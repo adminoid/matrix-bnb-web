@@ -62,6 +62,8 @@ class Common implements ICommon {
   async ThrowAlert (type: string, error: any) {
     let message: any = error
     // only for error messages
+    console.log(error)
+    console.log(error.includes)
     if (
       type === 'danger'
       && typeof error === 'string'
@@ -296,5 +298,44 @@ TX: ${resp.transactionHash}
       this.EmitDisabled(`sendAmount`, false)
     }
   }
-  async withdrawTen (): Promise<void> {}
+  async withdrawTen (): Promise<void> {
+    this.EmitDisabled(`withdrawTen`, true)
+    try {
+      const tx = await this.Core.methods
+        .getTenPercentOnceYear()
+        // .call()
+        .send({
+          from: this.Wallet,
+          gasLimit: 310000, // not required
+        }
+          ,(err, tx) => {
+              if (tx){
+                  console.log("it's ok")
+              }
+              if (err) {
+                  console.log(err)
+              }
+          }
+
+        )
+      // .catch(e => console.log('1084:', e))
+      // .on('error', (err, receipt) => {
+      //     console.log("err.message =",err.message);
+      //     console.log("receipt =", receipt);
+      // });
+      // .catch(revertReason => console.log({ revertReason }))
+
+      const resp = await tx()
+      console.dir(resp)
+
+      // console.dir(MSI.web3.utils.fromWei(resp, "ether"))
+
+      await this.ThrowAlert('success', resp)
+
+    } catch (e) {
+      await this.ThrowAlert('danger', e.message)
+    } finally {
+      this.EmitDisabled(`withdrawTen`, false)
+    }
+  }
 }

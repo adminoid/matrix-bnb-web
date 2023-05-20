@@ -5,38 +5,24 @@ alerts
 
   connect
 
-.container
-  ul.nav.nav-tabs.mt-2
-    li.nav-item
-      a.nav-link.active(aria-current='page', href='#') Active
-    li.nav-item
-      a.nav-link(href='#') Link
-    li.nav-item
-      a.nav-link(href='#') Link
-    li.nav-item
-      a.nav-link.disabled Disabled
-
-  panel-whose
-
-  panel-withdraw
-
-  panel-get-core-user
-
-  panel-get-matrix-user
-
-  panel-send-amount
-
+  .row.frame
+    .mb-3.row
+      .fst-italic Withdraw 10% after year, then once of year
+    .row
+      button(
+        type="button"
+        class="btn btn-outline-danger"
+        @click="withdrawTen"
+        :disabled="disabled.status"
+      ) Withdraw
 .end-space
-
 </template>
 
 <script lang="ts" setup>
 import { useNuxtApp } from '#app'
-import { onMounted } from 'vue'
+import { onMounted, nextTick } from 'vue'
 import Alerts from '~/components/Alerts.vue'
 import Connect from '~/components/Connect.vue'
-import PanelWhose from '~/components/PanelWhose.vue'
-import PanelWithdraw from '~/components/PanelWithdraw.vue'
 import { useDisabled } from '~/composables/useDisabled'
 
 const { $Blockchain } = useNuxtApp()
@@ -45,6 +31,12 @@ const disabled = useDisabled()
 onMounted(async () => {
   await $Blockchain.init()
 })
+
+const withdrawTen = async () => {
+  await nextTick(async () => {
+    await $Blockchain.withdrawTen()
+  })
+}
 </script>
 
 <style lang="sass" scoped>
