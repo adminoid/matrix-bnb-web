@@ -18,11 +18,15 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, nextTick } from 'vue'
 import { useNuxtApp } from '#app'
 import { useDisabled } from '~/composables/useDisabled'
 
-const disabled = useDisabled()
+const disabled = ref(true)
+nextTick(() => {
+  disabled.value = useDisabled()
+})
+
 const { $Blockchain } = useNuxtApp()
 
 const connectedWallet = ref('')

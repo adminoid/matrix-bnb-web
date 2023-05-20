@@ -1,25 +1,36 @@
 <template lang="pug">
 .row.frame
-  .mb-3.row
+  .row
     .col.col-sm-3.mb-3
-      label.col-form-label(for='user-core') Get Core user
+      label.col-form-label(for='user-matrix') User
     .col-sm-9.mb-3
       .input-group
-        input#user-core.form-control.col-4(
+        input#user-matrix.form-control.col-4(
           type='text'
+          v-model="userMatrixAddress"
           :class="{'is-invalid': !!error}"
-          v-model="userCoreAddress"
           :disabled="disabled.status"
           required
         )
         .invalid-feedback {{ error }}
+  .mb-3.row
+    .col.col-sm-3.mb-3
+      label.col-form-label(for='matrix-level') Matrix level
+    .col-sm-9.mb-3
+      .input-group
+        input#matrix-level.form-control.col-4(
+          type='number' min="0" step="1"
+          v-model="userMatrixLevel"
+          :disabled="disabled.status"
+          required
+        )
   .row
     button(
       type="button"
       class="btn btn-outline-warning"
-      @click="getCoreUser"
+      @click="getMatrixUser"
       :disabled="disabled.status"
-    ) Get Core user
+    ) Get Matrix user
 </template>
 
 <script lang="ts" setup>
@@ -31,10 +42,12 @@ import Web3 from 'web3'
 const disabled = useDisabled()
 const { $Blockchain } = useNuxtApp()
 
-const userCoreAddress = ref('')
+const userMatrixLevel = ref('0')
+
+const userMatrixAddress = ref('')
 
 const error = ref('')
-watch(userCoreAddress, async (newValue) => {
+watch(userMatrixAddress, async (newValue) => {
   await validateValue(newValue)
 })
 
@@ -51,10 +64,10 @@ const validateValue = async (value) => {
   }
 }
 
-const getCoreUser = async () => {
-  await validateValue(userCoreAddress.value)
+const getMatrixUser = async () => {
+  await validateValue(userMatrixAddress.value)
   if (!error.value) {
-    await $Blockchain.getCoreUser(userCoreAddress.value)
+    await $Blockchain.getMatrixUser(userMatrixLevel.value, userMatrixAddress.value)
   }
 }
 </script>

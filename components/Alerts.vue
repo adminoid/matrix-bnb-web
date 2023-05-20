@@ -68,15 +68,15 @@ const getPathByAlertType = (type) => {
   position: fixed
   bottom: 20px
   right: 20px
-  opacity: .6
   max-width: 659px
   z-index: 100
-  &:hover
-    opacity: 1
   .alert
     padding: 8px !important
     right: 30px
     bottom: 3px
+    opacity: .6
+    &:hover
+      opacity: 1
     &.alert-danger
       border-color: #AB666B
     &.alert-success

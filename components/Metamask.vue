@@ -22,53 +22,36 @@ alerts
 
   panel-get-core-user
 
+  panel-get-matrix-user
+
   //.row.frame
-  //  .mb-3.row
+  //  .row
   //    .col.col-sm-3.mb-3
-  //      label.col-form-label(for='user-core') Get Core user
+  //      label.col-form-label(for='user-matrix') User
   //    .col-sm-9.mb-3
   //      .input-group
-  //        input#user-core.form-control.col-4(
+  //        input#user-matrix.form-control.col-4(
   //          type='text'
-  //          v-model="userCoreAddress"
+  //          v-model="userMatrixAddress"
+  //          :disabled="disabled.status"
+  //        )
+  //  .mb-3.row
+  //    .col.col-sm-3.mb-3
+  //      label.col-form-label(for='matrix-level') Matrix level
+  //    .col-sm-9.mb-3
+  //      .input-group
+  //        input#matrix-level.form-control.col-4(
+  //          type='text'
+  //          v-model="userMatrixLevel"
   //          :disabled="disabled.status"
   //        )
   //  .row
   //    button(
   //      type="button"
   //      class="btn btn-outline-warning"
-  //      @click="getCoreUser"
+  //      @click="getMatrixUser"
   //      :disabled="disabled.status"
-  //    ) Get Core user
-
-  .row.frame
-    .row
-      .col.col-sm-3.mb-3
-        label.col-form-label(for='user-matrix') User
-      .col-sm-9.mb-3
-        .input-group
-          input#user-matrix.form-control.col-4(
-            type='text'
-            v-model="userMatrixAddress"
-            :disabled="disabled.status"
-          )
-    .mb-3.row
-      .col.col-sm-3.mb-3
-        label.col-form-label(for='matrix-level') Matrix level
-      .col-sm-9.mb-3
-        .input-group
-          input#matrix-level.form-control.col-4(
-            type='text'
-            v-model="userMatrixLevel"
-            :disabled="disabled.status"
-          )
-    .row
-      button(
-        type="button"
-        class="btn btn-outline-warning"
-        @click="getMatrixUser"
-        :disabled="disabled.status"
-      ) Get Matrix user
+  //    ) Get Matrix user
 
   .row.frame
     .mb-3.row
@@ -129,11 +112,11 @@ const sendBnbAmount = ref('')
 //   await $Blockchain.getCoreUser(userCoreAddress.value)
 // }
 
-const userMatrixLevel = ref('')
-const userMatrixAddress = ref('')
-const getMatrixUser = async () => {
-  await $Blockchain.getMatrixUser(userMatrixLevel.value, userMatrixAddress.value)
-}
+// const userMatrixLevel = ref('')
+// const userMatrixAddress = ref('')
+// const getMatrixUser = async () => {
+//   await $Blockchain.getMatrixUser(userMatrixLevel.value, userMatrixAddress.value)
+// }
 
 const sendBnb = async () =>
     (await $Blockchain.sendBnb(sendBnbAmount.value))
