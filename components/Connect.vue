@@ -2,7 +2,10 @@
 .row.frame.border-success
   .row.mb-3(v-if="disabled.status")
     strong Awaiting: {{ disabled.cause }}... &nbsp;
-      span.spinner-border.ms-auto(role="status")
+      span.spinner-border.ms-auto(
+        v-if="!isAwaitConnect"
+        role="status"
+      )
 
   .mb-3.row(v-if="connectedWallet")
     .debug-panel Connected wallet: <span class="debug-panel__wallet">{{ connectedWallet }}</span>
@@ -18,23 +21,20 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch, nextTick } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 import { useNuxtApp } from '#app'
 import { useDisabled } from '~/composables/useDisabled'
 
-const disabled = ref(true)
-nextTick(() => {
-  disabled.value = useDisabled()
-})
-
+const disabled = useDisabled()
 const { $Blockchain } = useNuxtApp()
-
 const connectedWallet = ref('')
 const connectWallet = async () => {
   await $Blockchain.connect()
   await checkConnected([$Blockchain.Wallet])
 }
-
+const isAwaitConnect = computed(
+  () => disabled.value.cause === 'Please connect Metamask'
+)
 const buttonText = ref('Connect Metamask')
 const buttonDisabled = ref(false)
 onMounted(async () => {

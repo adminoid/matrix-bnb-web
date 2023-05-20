@@ -62,8 +62,6 @@ class Common implements ICommon {
   async ThrowAlert (type: string, error: any) {
     let message: any = error
     // only for error messages
-    console.log(error)
-    console.log(error.includes)
     if (
       type === 'danger'
       && typeof error === 'string'

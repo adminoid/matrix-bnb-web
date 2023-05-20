@@ -25,8 +25,8 @@ import Alerts from '~/components/Alerts.vue'
 import Connect from '~/components/Connect.vue'
 import { useDisabled } from '~/composables/useDisabled'
 
-const { $Blockchain } = useNuxtApp()
 const disabled = useDisabled()
+const { $Blockchain } = useNuxtApp()
 
 onMounted(async () => {
   await $Blockchain.init()
