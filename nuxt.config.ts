@@ -3,11 +3,18 @@ import { defineNuxtConfig } from 'nuxt/config';
 // console.info(process.env.CHAIN_ID)
 
 export default defineNuxtConfig({
+  modules: [
+    '@nuxtjs/device',
+  ],
   devServer: {
     port: 3333,
   },
   runtimeConfig: {
     public: {
+      QR_IMG:
+        (process.env.QR_IMG)
+          ? process.env.QR_IMG
+          : 'qr.png',
       CHAIN_ID:
         (process.env.CHAIN_ID)
           ? process.env.CHAIN_ID
