@@ -6,7 +6,7 @@ alerts
   connect
 
 .container
-  ul.nav.nav-tabs.mt-2
+  ul.nav.nav-tabs.mt-2.mb-0
     li.nav-item
       NuxtLink.nav.nav-link(to="/") Read methods
     li.nav-item
@@ -62,5 +62,4 @@ ul.nav.nav-tabs
     background-color: var(--bs-nav-tabs-link-active-bg)
     border-color: #0d6efd
     border-width: 2px
-.nav-tabs .nav-link:hover
 </style>

@@ -1,5 +1,5 @@
 <template lang="pug">
-.row.frame
+.row.frame.frame_no-top
   .mb-3.row
     .col.col-sm-3.mb-3
       label.col-form-label(for='user-core') Get Core user
