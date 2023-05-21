@@ -63,6 +63,13 @@ const registerWhose = async () => {
   }
 }
 
+$Blockchain.Nuxt.$on('update-whose', () => {
+  const whoseWallet = localStorage.getItem('whose_param')
+  if (whoseWallet) {
+    validateValue(whoseWallet)
+  }
+})
+
 const isDisabledWhoseInput = ref(false)
 onMounted(async () => {
   let whose = localStorage.getItem('whose_param')

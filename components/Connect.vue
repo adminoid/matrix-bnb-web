@@ -38,10 +38,8 @@ const isAwaitConnect = computed(
 const buttonText = ref('Connect Metamask')
 const buttonDisabled = ref(false)
 onMounted(async () => {
-
   const accounts = await $Blockchain.Web3.eth.getAccounts()
   await checkConnected(accounts)
-
   $Blockchain.Ethereum.on("accountsChanged", async (accountsPassed) => {
     await checkConnected(accountsPassed)
   })
@@ -76,6 +74,7 @@ const checkConnected = async (accounts) => {
     connectedWallet.value = ''
     buttonText.value = 'Connect Metamask'
     buttonDisabled.value = false
+    $Blockchain.Wallet = ''
   }
   // is ok
   else {
@@ -83,6 +82,7 @@ const checkConnected = async (accounts) => {
     buttonText.value = 'Metamask connected'
     buttonDisabled.value = true
   }
+  $Blockchain.Nuxt.$emit('update-whose')
 }
 </script>
 
