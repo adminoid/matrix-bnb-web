@@ -5,6 +5,8 @@
   .mb-3.row
     .col.col-sm-3.mb-3
       label.col-form-label(for='register-whose') Register whose
+      .input-group
+        a.text-danger(href='#' @click="clearWhose") clear
     .col-sm-9.mb-3
       .input-group
         input#register-whose.form-control.col-4(
@@ -32,7 +34,6 @@ import Web3 from 'web3'
 
 const disabled = ref({cause: '', status: false})
 disabled.value = useDisabled()
-
 const { $Blockchain } = useNuxtApp()
 
 const registerWhoseAddr = ref('')
@@ -40,6 +41,11 @@ const error = ref('')
 watch(registerWhoseAddr, async (newValue) => {
   await validateValue(newValue)
 })
+
+const clearWhose = () => {
+  localStorage.removeItem('whose_param')
+  registerWhoseAddr.value = ''
+}
 
 const validateValue = async (value) => {
   const accounts = await $Blockchain.Web3.eth.getAccounts();
