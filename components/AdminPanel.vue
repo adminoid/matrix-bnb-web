@@ -21,8 +21,6 @@ alerts
 <script lang="ts" setup>
 import { useNuxtApp } from '#app'
 import { onMounted, nextTick } from 'vue'
-import Alerts from '~/components/Alerts.vue'
-import Connect from '~/components/Connect.vue'
 import { useDisabled } from '~/composables/useDisabled'
 
 const disabled = useDisabled()
@@ -39,7 +37,7 @@ const withdrawTen = async () => {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .container
   padding: 1em
 
@@ -56,10 +54,6 @@ const withdrawTen = async () => {
     font-style: italic
 .row
   margin: 0
-.debug-panel
-  font-size: 11px
-  border: 1px dashed rgba(231, 66, 140, 0.51)
-  border-radius: 2px
 .end-space
   height: 800px
 .spinner-border

@@ -1,9 +1,10 @@
 <template lang="pug">
 .container
   .row
-    .col-md-10.col-lg-8
+    .col
+    .col-md-10.col-lg-10.col-xl-8
       admin-panel
-    .col-sm-2.col-lg-4
+    .col
 </template>
 
 <script setup>

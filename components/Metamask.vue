@@ -8,23 +8,11 @@ alerts
 .container
   ul.nav.nav-tabs.mt-2
     li.nav-item
-      a.nav-link.active(aria-current='page', href='#') Active
+      NuxtLink.nav.nav-link(to="/") Read methods
     li.nav-item
-      a.nav-link(href='#') Link
-    li.nav-item
-      a.nav-link(href='#') Link
-    li.nav-item
-      a.nav-link.disabled Disabled
+      NuxtLink.nav.nav-link(to="/write") Write methods
 
-  panel-whose
-
-  panel-withdraw
-
-  panel-get-core-user
-
-  panel-get-matrix-user
-
-  panel-send-amount
+router-view
 
 .end-space
 
@@ -33,10 +21,6 @@ alerts
 <script lang="ts" setup>
 import { useNuxtApp } from '#app'
 import { onMounted } from 'vue'
-import Alerts from '~/components/Alerts.vue'
-import Connect from '~/components/Connect.vue'
-import PanelWhose from '~/components/PanelWhose.vue'
-import PanelWithdraw from '~/components/PanelWithdraw.vue'
 import { useDisabled } from '~/composables/useDisabled'
 
 const { $Blockchain } = useNuxtApp()
@@ -47,7 +31,7 @@ onMounted(async () => {
 })
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .container
   padding: 1em
 
@@ -64,10 +48,6 @@ onMounted(async () => {
     font-style: italic
 .row
   margin: 0
-.debug-panel
-  font-size: 11px
-  border: 1px dashed rgba(231, 66, 140, 0.51)
-  border-radius: 2px
 .end-space
   height: 800px
 .spinner-border
@@ -77,4 +57,10 @@ onMounted(async () => {
   top: 3px
 ul.nav.nav-tabs
   margin-bottom: 20px
+  .router-link-exact-active
+    color: var(--bs-nav-tabs-link-active-color)
+    background-color: var(--bs-nav-tabs-link-active-bg)
+    border-color: #0d6efd
+    border-width: 2px
+.nav-tabs .nav-link:hover
 </style>

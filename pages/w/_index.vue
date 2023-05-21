@@ -1,12 +1,16 @@
 <template lang="pug">
 .container
   .row
-    .col-md-10.col-lg-8
+    .col
+    .col-md-10.col-lg-10.col-xl-8
       metamask
-    .col-sm-2.col-lg-4
+    .col
 </template>
 
 <script setup>
+
+// TODO: after setup whose always redirect to /
+
 import Metamask from '~/components/Metamask'
 import { onMounted } from 'vue'
 import Web3 from 'web3'
@@ -19,7 +23,6 @@ onMounted(async () => {
   if (Web3.utils.isAddress(W)) {
     localStorage.setItem('whose_param', W)
   } else {
-    console.warn('incorrect whose wallet...')
     await navigateTo({ path: '/' })
   }
 })

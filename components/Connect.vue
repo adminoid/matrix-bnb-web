@@ -87,9 +87,6 @@ const checkConnected = async (accounts) => {
 </script>
 
 <style lang="sass">
-.debug-panel
-  &__wallet
-    color: #6610f2
 .spinner-border
   --bs-spinner-width: 1.5rem
   --bs-spinner-height: 1.5rem
