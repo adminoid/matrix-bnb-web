@@ -8,36 +8,24 @@ export default <RouterConfig> {
     {
       name: 'main',
       path: '/',
-      component: () => import('~/pages/index.vue'),
+      component: () => import('~/pages/_index.vue'),
       children: [
         {
           path: '',
+          component: () => import('~/pages/write.vue'),
+          name: 'write',
+        },
+        {
+          path: 'read',
           component: () => import('~/pages/read.vue'),
           name: 'read',
         },
-        {
-          path: 'write',
-          component: () => import('~/pages/write.vue'),
-          name: 'write',
-        }
       ],
     },
     {
-      name: 'w_main',
-      path: '/w/:w',
-      component: () => import('~/pages/w/_index.vue'),
-      children: [
-        {
-          path: '',
-          component: () => import('~/pages/read.vue'),
-          name: 'w_read',
-        },
-        {
-          path: 'write',
-          component: () => import('~/pages/write.vue'),
-          name: 'w_write',
-        }
-      ]
+      name: 'main_w',
+      path: '/:w',
+      component: () => import('~/pages/_index.vue'),
     },
     {
       name: 'admin',

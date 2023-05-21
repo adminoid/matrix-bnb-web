@@ -8,9 +8,9 @@ alerts
 .container
   ul.nav.nav-tabs.mt-2.mb-0
     li.nav-item
-      NuxtLink.nav.nav-link(to="/") Read methods
+      NuxtLink.nav.nav-link(to="/") Write methods
     li.nav-item
-      NuxtLink.nav.nav-link(to="/write") Write methods
+      NuxtLink.nav.nav-link(to="/read") Read methods
 
 router-view
 
