@@ -1,11 +1,11 @@
 <template lang="pug">
 alerts
 
-.container
+.container.pb-0
 
   connect
 
-  ul.nav.nav-tabs.mt-2.mb-0
+  ul.nav.nav-tabs.mt-5.mb-0
     li.nav-item
       NuxtLink.nav.nav-link(to="/") Write methods
     li.nav-item
@@ -55,7 +55,6 @@ onMounted(async () => {
   position: relative
   top: 3px
 ul.nav.nav-tabs
-  margin-bottom: 20px
   .router-link-exact-active
     color: var(--bs-nav-tabs-link-active-color)
     background-color: var(--bs-nav-tabs-link-active-bg)

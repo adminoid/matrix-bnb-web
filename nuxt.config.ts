@@ -11,14 +11,18 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
+      APP_LINK:
+        (process.env.APP_LINK)
+          ? process.env.APP_LINK
+          : 'https://metamask.app.link/dapp/romb.ru/',
       QR_IMG:
         (process.env.QR_IMG)
           ? process.env.QR_IMG
           : 'qr.png',
-      CHAIN_ID:
+      CHAIN_ID: // 97(0x61) - testnet, 1337(0x7A69) - hardhat
         (process.env.CHAIN_ID)
           ? process.env.CHAIN_ID
-          : '0x7A69',
+          : '97',
       RPC_URL:
         (process.env.RPC_URL)
           ? process.env.RPC_URL

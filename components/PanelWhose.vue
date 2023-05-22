@@ -6,7 +6,13 @@
     .col.col-sm-3.mb-3
       label.col-form-label(for='register-whose') Register whose
       .input-group
-        a.text-danger(href='#' @click="clearWhose") clear
+        a.btn.btn-danger.btn-sm(
+          :class="{disabled: !registerWhoseAddr}"
+          tabindex="-1"
+          role="button"
+          aria-disabled="true"
+          @click="clearWhose"
+        ) <i class="bi bi-x-circle"></i> clear
     .col-sm-9.mb-3
       .input-group
         input#register-whose.form-control.col-4(

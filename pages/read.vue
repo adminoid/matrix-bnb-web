@@ -1,5 +1,5 @@
 <template lang="pug">
-.container
+.container.mt-0
   panel-get-core-user
   panel-get-matrix-user
 </template>

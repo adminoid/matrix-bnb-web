@@ -6,9 +6,8 @@
       .center-block(v-if="!eth && isMobile")
         .center-block__content
           h1 Click to qr code to open site in MetaMask
-          a(href="https://metamask.app.link/dapp/romb.ru/")
-            img(:src="'/' + qrImg")
-
+          a(:href="$Blockchain.Config.APP_LINK")
+            img(:src="'/' + $Blockchain.Config.QR_IMG")
       metamask(v-else)
     .col
 </template>
@@ -21,10 +20,6 @@ import { useNuxtApp } from '#app'
 
 const { $Blockchain } = useNuxtApp()
 const { isMobile } = useDevice()
-
-// image filename from .env to /public/*.png
-const qrImg = ref($Blockchain.Config.QR_IMG)
-
 let isShowMobileStuff = ref(false)
 let eth = ref(true)
 nextTick(() => {
