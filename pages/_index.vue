@@ -39,7 +39,9 @@ onMounted(async () => {
   if (Web3.utils.isAddress(W)) {
     localStorage.setItem('whose_param', W)
   }
-  await navigateTo({ path: '/' })
+  if (route.name !== 'read') {
+    await navigateTo({ path: '/' })
+  }
 })
 </script>
 

@@ -5,7 +5,6 @@ alerts
 
   connect
 
-.container
   ul.nav.nav-tabs.mt-2.mb-0
     li.nav-item
       NuxtLink.nav.nav-link(to="/") Write methods

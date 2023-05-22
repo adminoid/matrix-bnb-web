@@ -32,8 +32,7 @@ import { useNuxtApp } from '#app'
 import { useDisabled } from '~/composables/useDisabled'
 import Web3 from 'web3'
 
-const disabled = ref({cause: '', status: false})
-disabled.value = useDisabled()
+const disabled = useDisabled()
 const { $Blockchain } = useNuxtApp()
 
 const registerWhoseAddr = ref('')

@@ -23,8 +23,8 @@ import { useNuxtApp } from '#app'
 import { onMounted, nextTick } from 'vue'
 import { useDisabled } from '~/composables/useDisabled'
 
-const disabled = useDisabled()
 const { $Blockchain } = useNuxtApp()
+const disabled = useDisabled()
 
 onMounted(async () => {
   await $Blockchain.init()

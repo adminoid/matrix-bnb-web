@@ -25,8 +25,10 @@ import { onMounted, ref, watch, computed } from 'vue'
 import { useNuxtApp } from '#app'
 import { useDisabled } from '~/composables/useDisabled'
 
-const disabled = useDisabled()
 const { $Blockchain } = useNuxtApp()
+const buttonText = ref('Connect Metamask')
+const buttonDisabled = ref(false)
+const disabled = useDisabled()
 const connectedWallet = ref('')
 const connectWallet = async () => {
   await $Blockchain.connect()
@@ -35,14 +37,20 @@ const connectWallet = async () => {
 const isAwaitConnect = computed(
   () => disabled.value.cause === 'Please connect Metamask'
 )
-const buttonText = ref('Connect Metamask')
-const buttonDisabled = ref(false)
-onMounted(async () => {
+
+const checkAccounts = async () => {
   const accounts = await $Blockchain.Web3.eth.getAccounts()
   await checkConnected(accounts)
   $Blockchain.Ethereum.on("accountsChanged", async (accountsPassed) => {
     await checkConnected(accountsPassed)
   })
+}
+onMounted(async () => {
+  await checkAccounts()
+})
+
+$Blockchain.Nuxt.$on('connect-update', async () => {
+  await checkAccounts()
 })
 
 watch(connectedWallet, (value) => {
