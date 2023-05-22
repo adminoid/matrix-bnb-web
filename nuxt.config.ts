@@ -22,7 +22,7 @@ export default defineNuxtConfig({
       CHAIN_ID: // 97(0x61) - testnet, 1337(0x7A69) - hardhat
         (process.env.CHAIN_ID)
           ? process.env.CHAIN_ID
-          : '97',
+          : '0x61',
       RPC_URL:
         (process.env.RPC_URL)
           ? process.env.RPC_URL
