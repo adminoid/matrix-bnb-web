@@ -12,7 +12,7 @@
           role="button"
           aria-disabled="true"
           @click="clearWhose"
-        ) <i class="bi bi-x-circle"></i> clear
+        ) clear
     .col-sm-9.mb-3
       .input-group
         input#register-whose.form-control.col-4(
