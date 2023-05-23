@@ -4,7 +4,7 @@
     .fst-italic Same as just send bnb from wallet to contract address
   .mb-3.row
     .col.col-sm-3.mb-3
-      label.col-form-label(for='send-amount') Send to contract
+      label.col-form-label(for='send-amount') Send amount
     .col-sm-9.mb-3
       .input-group
         input#send-amount.form-control.col-4(
