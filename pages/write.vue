@@ -1,8 +1,8 @@
 <template lang="pug">
 .container
   panel-whose
-  panel-withdraw
   panel-send-amount
+  panel-withdraw
 </template>
 
 <script lang="ts" setup>

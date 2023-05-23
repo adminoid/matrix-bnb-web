@@ -6,7 +6,7 @@
       .center-block(v-if="!eth && isMobile")
         .center-block__content
           h1 Click to qr code to open site in MetaMask
-          a(:href="$Blockchain.Config.APP_LINK")
+          a(:href="appLink")
             img(:src="'/' + $Blockchain.Config.QR_IMG")
       metamask(v-else)
     .col
@@ -14,7 +14,7 @@
 
 <script setup>
 // metamask link generates there https://metamask.github.io/metamask-deeplinks/
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import Web3 from 'web3'
 import { useNuxtApp } from '#app'
 
@@ -25,6 +25,14 @@ let eth = ref(true)
 nextTick(() => {
   eth.value = !!$Blockchain.Ethereum
   isShowMobileStuff = ref(!eth && isMobile)
+})
+
+const appLink = computed(() => {
+  // get whose wallet
+  const whoseWallet = localStorage.getItem('whose_param')
+  return (whoseWallet)
+    ? $Blockchain.Config.APP_LINK + whoseWallet
+    : $Blockchain.Config.APP_LINK
 })
 
 const route = useRoute();
