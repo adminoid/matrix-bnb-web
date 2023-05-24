@@ -19,7 +19,9 @@ export default defineNuxtConfig({
         (process.env.QR_IMG)
           ? process.env.QR_IMG
           : 'qr.png',
-      CHAIN_ID: // 97(0x61) - testnet, 1337(0x7A69) - hardhat
+      CHAIN_ID: // 97(0x61) - testnet,
+                // 1337(0x7A69) - hardhat
+                // 56(0x38) - mainnet
         (process.env.CHAIN_ID)
           ? process.env.CHAIN_ID
           : '0x61',
