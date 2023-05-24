@@ -208,15 +208,15 @@ plateau: ${resp.plateau}
   async registerWhose (whose: string): Promise<void> {
     try {
       this.EmitDisabled(`registerWhose`, true)
-      const value = await this.Core.methods
-        .payUnit()
-        .call({
-          from: this.Wallet,
-        });
+      // const value = await this.Core.methods
+      //   .payUnit()
+      //   .call({
+      //     from: this.Wallet,
+      //   });
       const resp = await this.Core
       .methods.register(whose).send({
         from: this.Wallet,
-        value,
+        value: 10000000000000000,
         // gasLimit: 5000000, // not required
         gas: 300000, // 274633
       })
