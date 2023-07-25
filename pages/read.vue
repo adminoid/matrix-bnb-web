@@ -2,6 +2,7 @@
 .container.mt-0
   panel-get-core-user
   panel-get-matrix-user
+  panel-get-matrix-user-by-id
 </template>
 
 <script lang="ts" setup>

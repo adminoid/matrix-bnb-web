@@ -44,11 +44,11 @@ export default defineNuxtConfig({
       CURRENCY_SYMBOL:
         (process.env.CURRENCY_SYMBOL)
           ? process.env.CURRENCY_SYMBOL
-          : 'HNB',
+          : 'HH',
       CURRENCY_DECIMALS:
         (process.env.CHAIN_ID)
           ? process.env.CHAIN_ID
-          : 18,
+          : '18',
     }
   }
 })

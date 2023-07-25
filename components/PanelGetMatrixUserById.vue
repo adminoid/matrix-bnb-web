@@ -2,7 +2,19 @@
 .row.frame
   .row
     .col.col-sm-3.mb-3
-      label.col-form-label(for='user-matrix') User
+      label.col-form-label(for='matrix-level') Matrix level
+    .col-sm-9.mb-3
+      .input-group
+        input#matrix-level.form-control.col-4(
+          type='number' min="0" step="1"
+          v-model="userMatrixLevel"
+          :disabled="disabled.status"
+          required
+        )
+
+  .mb-3.row
+    .col.col-sm-3.mb-3
+      label.col-form-label(for='user-matrix') User index
     .col-sm-9.mb-3
       .input-group
         input#user-matrix.form-control.col-4(
@@ -13,17 +25,7 @@
           required
         )
         .invalid-feedback {{ error }}
-  .mb-3.row
-    .col.col-sm-3.mb-3
-      label.col-form-label(for='matrix-level') Matrix level
-    .col-sm-9.mb-3
-      .input-group
-        input#matrix-level.form-control.col-4(
-          type='number' min="0" step="1"
-          v-model="userMatrixLevel"
-          :disabled="disabled.status"
-          required
-        )
+
   .row
     button(
       type="button"
@@ -51,7 +53,7 @@ watch(userMatrixAddress, async (newValue) => {
   await validateValue(newValue)
 })
 
-const validateValue = async (value: string) => {
+const validateValue = async (value) => {
   const accounts = await $Blockchain.Web3.eth.getAccounts();
   if (!accounts || !$Blockchain.Wallet) {
     error.value = 'Please connect your wallet first'
