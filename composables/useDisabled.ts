@@ -7,12 +7,13 @@ export function useDisabled() {
   let disabled = ref({ cause: '', status: false})
 
   // a composable can update its managed state over time.
-  async function update(disableObject) {
+  async function update(disableObject: any) {
     await nextTick(() => {
       disabled.value = disableObject
     })
   }
 
+  // @ts-ignore
   useNuxtApp().$on('disabled', async (disabledObj: TDisabled) => {
     await update(disabledObj)
   })

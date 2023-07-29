@@ -126,7 +126,7 @@ class Network extends Common implements INetwork {
 }
 
 export class External extends Network implements IExternal {
-  constructor (nuxt, globalThis) {super(nuxt, globalThis)}
+  constructor (nuxt: any, globalThis: any) {super(nuxt, globalThis)}
   async connect (): Promise<void> {
     this.EmitDisabled('connect', true)
     await this.setNetwork()
@@ -174,6 +174,7 @@ whose: ${resp.whose}
       }
     }
   }
+
   async getMatrixUser (level: number | string, wallet: string): Promise<void> {
     try {
       this.EmitDisabled(`getMatrixUser`, true)
@@ -202,6 +203,41 @@ plateau: ${resp.plateau}
       await this.ThrowAlert('danger', e.message)
     } finally {
       this.EmitDisabled(`getMatrixUser`, false)
+    }
+  }
+
+  async GetCoreUserByMatrixPosition (level: number | string, userIndex: number | string): Promise<void> {
+    try {
+      this.EmitDisabled(`GetCoreUserByMatrixPosition`, true)
+      const resp = await this.Core
+        .methods.getCoreUserByMatrixPosition(level, userIndex)
+        .call({
+          from: this.Wallet,
+          to: new Config().CONTRACT_ADDRESS,
+        })
+
+      console.info("resp...")
+      console.log(resp)
+
+      // todo: display resp in web interface
+      let msg
+      if (!resp.user.isValue) {
+        msg = `user N ${userIndex} is not registered`
+      } else {
+        msg = `
+GetCoreUserByMatrixPosition() method response:
+address: ${resp.userAddress}
+claims: ${this.Web3.utils.fromWei(resp.user.claims, "ether")} BNB
+gifts: ${this.Web3.utils.fromWei(resp.user.gifts, "ether")} BNB
+level: ${resp.user.level}
+whose: ${resp.user.whose}
+`
+      }
+      await this.ThrowAlert('primary', msg)
+    } catch (e) {
+      await this.ThrowAlert('danger', e.message)
+    } finally {
+      this.EmitDisabled(`GetCoreUserByMatrixPosition`, false)
     }
   }
 

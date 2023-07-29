@@ -19,7 +19,7 @@
       .input-group
         input#user-matrix.form-control.col-4(
           type='text'
-          v-model="userMatrixAddress"
+          v-model="userMatrixIndex"
           :class="{'is-invalid': !!error}"
           :disabled="disabled.status"
           required
@@ -46,19 +46,19 @@ const { $Blockchain } = useNuxtApp()
 
 const userMatrixLevel = ref('0')
 
-const userMatrixAddress = ref('')
+const userMatrixIndex = ref('0')
 
 const error = ref('')
-watch(userMatrixAddress, async (newValue) => {
+watch(userMatrixIndex, async (newValue) => {
   await validateValue(newValue)
 })
 
-const validateValue = async (value) => {
+const validateValue = async (value: any) => {
   const accounts = await $Blockchain.Web3.eth.getAccounts();
   if (!accounts || !$Blockchain.Wallet) {
     error.value = 'Please connect your wallet first'
   } else {
-    if (!Web3.utils.isAddress(value)) {
+    if (value < 0 || value > 20) {
       error.value = 'please enter valid ethereum address'
     } else {
       error.value = ''
@@ -67,9 +67,9 @@ const validateValue = async (value) => {
 }
 
 const getMatrixUser = async () => {
-  await validateValue(userMatrixAddress.value)
+  await validateValue(userMatrixIndex.value)
   if (!error.value) {
-    await $Blockchain.getMatrixUser(userMatrixLevel.value, userMatrixAddress.value)
+    await $Blockchain.GetCoreUserByMatrixPosition(userMatrixLevel.value, userMatrixIndex.value)
   }
 }
 </script>
