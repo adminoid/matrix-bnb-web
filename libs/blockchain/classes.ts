@@ -216,9 +216,6 @@ plateau: ${resp.plateau}
           to: new Config().CONTRACT_ADDRESS,
         })
 
-      console.info("resp...")
-      console.log(resp)
-
       // todo: display resp in web interface
       let msg
       if (!resp.user.isValue) {

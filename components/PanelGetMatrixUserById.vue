@@ -1,8 +1,8 @@
 <template lang="pug">
-.row.frame
+form.row.frame(@submit.prevent="getMatrixUserById")
   .row
     .col.col-sm-3.mb-3
-      label.col-form-label(for='matrix-level') Matrix level
+      label.col-form-label(for='matrix-level') Matrix index
     .col-sm-9.mb-3
       .input-group
         input#matrix-level.form-control.col-4(
@@ -18,7 +18,7 @@
     .col-sm-9.mb-3
       .input-group
         input#user-matrix.form-control.col-4(
-          type='text'
+          type='number' min="0" step="1"
           v-model="userMatrixIndex"
           :class="{'is-invalid': !!error}"
           :disabled="disabled.status"
@@ -28,9 +28,8 @@
 
   .row
     button(
-      type="button"
+      type="submit"
       class="btn btn-outline-warning"
-      @click="getMatrixUser"
       :disabled="disabled.status"
     ) Get Matrix user
 </template>
@@ -39,7 +38,6 @@
 import { ref, watch } from 'vue'
 import { useNuxtApp } from '#app'
 import { useDisabled } from '~/composables/useDisabled'
-import Web3 from 'web3'
 
 const disabled = useDisabled()
 const { $Blockchain } = useNuxtApp()
@@ -66,7 +64,7 @@ const validateValue = async (value: any) => {
   }
 }
 
-const getMatrixUser = async () => {
+const getMatrixUserById = async () => {
   await validateValue(userMatrixIndex.value)
   if (!error.value) {
     await $Blockchain.GetCoreUserByMatrixPosition(userMatrixLevel.value, userMatrixIndex.value)
