@@ -1,6 +1,6 @@
 # Nuxt 3 Minimal Starter
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+[wallet connect latest version for Vue.js](https://docs.walletconnect.com/2.0/web3modal/v3/vue)
 
 ## Setup
 

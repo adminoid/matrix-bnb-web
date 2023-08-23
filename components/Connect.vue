@@ -58,7 +58,7 @@ watch(connectedWallet, (value) => {
   checkConnected(accounts)
 })
 
-const checkConnected = async (accounts) => {
+const checkConnected = async (accounts: any[]) => {
   // if mm is not installed
   if (!$Blockchain.Ethereum) {
     $Blockchain.Nuxt.$emit('disabled', {
