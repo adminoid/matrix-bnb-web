@@ -26,7 +26,6 @@
 import { ref, watch } from 'vue'
 import { useNuxtApp } from '#app'
 import { useDisabled } from '~/composables/useDisabled'
-import Web3 from 'web3'
 
 const disabled = useDisabled()
 const { $Blockchain } = useNuxtApp()
@@ -38,12 +37,12 @@ watch(userCoreAddress, async (newValue) => {
   await validateValue(newValue)
 })
 
-const validateValue = async (value) => {
+const validateValue = async (value: string) => {
   const accounts = await $Blockchain.Web3.eth.getAccounts();
   if (!accounts || !$Blockchain.Wallet) {
     error.value = 'Please connect your wallet first'
   } else {
-    if (!Web3.utils.isAddress(value)) {
+    if (!$Blockchain.Web3.utils.isAddress(value)) {
       error.value = 'please enter valid ethereum address'
     } else {
       error.value = ''

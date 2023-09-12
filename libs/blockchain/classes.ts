@@ -39,7 +39,7 @@ class CoreContract {
 class Common implements ICommon {
   Nuxt
   Ethereum
-  Web3
+  Web3: any
   Config: any
   Core
   Wallet: any
@@ -178,6 +178,9 @@ whose: ${resp.whose}
   }
 
   async getMatrixUser (level: number | string, wallet: string): Promise<void> {
+
+    console.info('..getMatrixUser..')
+
     try {
       this.EmitDisabled(`getMatrixUser`, true)
       const resp = await this.Core
@@ -187,17 +190,22 @@ whose: ${resp.whose}
           to: new Config().CONTRACT_ADDRESS,
         })
 
+
+      console.info('here debug')
+      console.log(resp)
+
       // todo: display resp in web interface
       let msg
-      if (!resp.isValue) {
+      if (!resp.user.isValue) {
         msg = `user ${wallet} is not registered`
       } else {
         msg = `
 getMatrixUser() method response:
-number: ${resp.index}
-parent: ${resp.parent}
-isRight: ${resp.isRight}
-plateau: ${resp.plateau}
+total in matrix level ${level}: ${resp.total}
+index (starts with 0): ${resp.user.index}
+parent: ${resp.user.parent}
+isRight: ${resp.user.isRight}
+plateau: ${resp.user.plateau}
 `
       }
       await this.ThrowAlert('primary', msg)
@@ -209,6 +217,9 @@ plateau: ${resp.plateau}
   }
 
   async GetCoreUserByMatrixPosition (level: number | string, userIndex: number | string): Promise<void> {
+
+    console.log('GetCoreUserByMatrixPosition!')
+
     try {
       this.EmitDisabled(`GetCoreUserByMatrixPosition`, true)
       const resp = await this.Core
@@ -217,6 +228,8 @@ plateau: ${resp.plateau}
           from: this.Wallet,
           to: new Config().CONTRACT_ADDRESS,
         })
+
+      console.log(resp)
 
       // todo: display resp in web interface
       let msg

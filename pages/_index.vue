@@ -15,7 +15,6 @@
 <script setup>
 // metamask link generates there https://metamask.github.io/metamask-deeplinks/
 import { onMounted, computed } from 'vue'
-import Web3 from 'web3'
 import { useNuxtApp } from '#app'
 
 const { $Blockchain } = useNuxtApp()
@@ -45,9 +44,7 @@ const testEvents = async () => {
   // todo: test work with event logs
   //  event Transfer(address indexed from, address indexed to, uint256 value);
 
-  const { Web3 } = await import('web3')
-
-  const web3 = new Web3(new Web3.providers.HttpProvider("https://eth.llamarpc.com/"))
+  const web3 = new $Blockchain.Web3(new $Blockchain.Web3.providers.HttpProvider("https://eth.llamarpc.com/"))
 
   const abi = (await import('../testing/abi/pepe.json')).default
   // const abi = await import('../testing/abi/pepe.json').default
@@ -89,14 +86,14 @@ const testEvents = async () => {
 onMounted(async () => {
   // save to localStorage route.params.w
   const W = route.params.w
-  if (Web3.utils.isAddress(W)) {
+  if ($Blockchain.Web3.utils.isAddress(W)) {
     localStorage.setItem('whose_param', W)
   }
   if (route.name !== 'read') {
     await navigateTo({ path: '/' })
   }
 
-  await testEvents()
+  // await testEvents()
 })
 </script>
 

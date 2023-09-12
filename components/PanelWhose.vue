@@ -52,12 +52,13 @@ const clearWhose = () => {
   registerWhoseAddr.value = ''
 }
 
-const validateValue = async (value) => {
+// todo: should be transferred to separate, 'cause multiples copies
+const validateValue = async (value: string) => {
   const accounts = await $Blockchain.Web3.eth.getAccounts();
   if (!accounts || !$Blockchain.Wallet) {
     error.value = 'Please connect your wallet first'
   } else {
-    if (!Web3.utils.isAddress(value)) {
+    if (!$Blockchain.Web3.utils.isAddress(value)) {
       error.value = 'please enter valid ethereum address'
     } else if (value.toLowerCase() === $Blockchain.Wallet.toLowerCase()) {
       error.value = 'Is not possible to be whose to yourself'

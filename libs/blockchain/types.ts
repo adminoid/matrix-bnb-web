@@ -1,5 +1,3 @@
-import Web3 from 'web3'
-
 export type TCurrency = {
   name: string,
   symbol: string,
@@ -29,7 +27,7 @@ export interface ICommon {
   // disabled: TDisabled
   Nuxt: any
   Ethereum: any
-  Web3: Web3
+  Web3: any
   Config: any
   Core: any
   Wallet: string
