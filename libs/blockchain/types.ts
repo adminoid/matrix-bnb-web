@@ -33,6 +33,6 @@ export interface ICommon {
   Config: any
   Core: any
   Wallet: string
-  EmitDisabled(type: string, status: boolean)
-  ThrowAlert(type: string, error: any)
+  EmitDisabled(type: string, status: boolean): void
+  ThrowAlert(type: string, error: any): void
 }

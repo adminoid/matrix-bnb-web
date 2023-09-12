@@ -7,11 +7,12 @@ import CoreJson from '~/contracts/Core.sol/Core.json'
 
 class Config {
   private static _instance: any
-  CONTRACT_ADDRESS: string
-  CHAIN_ID: string
-  CHAIN_NAME: string
-  RPC_URL: string;
-  CURRENCY: TCurrency
+  CONTRACT_ADDRESS: string = ""
+  CHAIN_ID: string = ""
+  CHAIN_NAME!: string
+  RPC_URL!: string
+  CURRENCY: TCurrency = { name: '', symbol: '', decimals: 0}
+  public!: object
   constructor() {
     if (!Config._instance) {
       Config._instance = useRuntimeConfig()
@@ -23,7 +24,7 @@ class Config {
 class CoreContract {
   private static _instance: any
   methods: any
-  constructor(web3, contractAddress) {
+  constructor(web3: any, contractAddress: string) {
     if (!CoreContract._instance) {
       web3.eth.handleRevert = true
       CoreContract._instance = new web3.eth.Contract(
@@ -39,14 +40,15 @@ class Common implements ICommon {
   Nuxt
   Ethereum
   Web3
-  Config
+  Config: any
   Core
-  Wallet
-  constructor (nuxt, globalThis) {
+  Wallet: any
+  constructor (nuxt: any, globalThis: any) {
     this.Nuxt = nuxt
     this.Ethereum = globalThis['ethereum']
     this.Web3 = new Web3(this.Ethereum)
-    this.Config = new Config()['public']
+    const publicConfig = new Config()
+    this.Config = publicConfig['public']
     this.Core = new CoreContract(this.Web3, this.Config.CONTRACT_ADDRESS)
   }
   async init() {
@@ -70,7 +72,7 @@ class Common implements ICommon {
       // @ts-ignore
       message = error.match(/transaction:\s(.+?)"/)[1]
     } else if (error.includes('while formatting outputs from RPC')) {
-      // "message":"Nonce too high. Expected nonce to be 0 but got 4. Note that transactions can't be queued when automining."
+      // "message":"Nonce too high. Expected nonce to be 0 but got 4. Note that transactions can't be queued when auto mining."
       message = error.match(/"message":"([^"]+)"/)[1]
     }
     this.Nuxt.$emit('alert', {
@@ -81,7 +83,7 @@ class Common implements ICommon {
 }
 
 class Network extends Common implements INetwork {
-  constructor (nuxt, globalThis) {super(nuxt, globalThis)}
+  constructor (nuxt: any, globalThis: any) {super(nuxt, globalThis)}
   private checkInstalledMetamask (): boolean {
     return Boolean(this.Ethereum && this.Ethereum.isMetaMask);
   }
@@ -135,7 +137,7 @@ export class External extends Network implements IExternal {
       if (accounts && accounts.length > 0) {
         this.Wallet = accounts[0]
       }
-    } catch (e) {
+    } catch (e: any) {
       await this.ThrowAlert('danger', e.message)
     } finally {
       this.EmitDisabled('connect', false)
@@ -273,7 +275,7 @@ TX: ${resp.transactionHash}
     this.EmitDisabled(`withdrawClaim`, true)
     try {
       const resp = await this.Core.methods
-        .withdrawClaim(this.Web3.utils.toWei(amount, "ether"))
+        .withdrawClaim(this.Web3.utils.toWei(String(amount), "ether"))
         .send({
           from: this.Wallet,
           gasLimit: 310000, // not required
@@ -300,7 +302,7 @@ TX: ${resp.transactionHash}
       const resp = await this.Web3.eth.sendTransaction({
         from: this.Wallet,
         to: this.Config.CONTRACT_ADDRESS,
-        value: this.Web3.utils.toWei(amount, "ether")
+        value: this.Web3.utils.toWei(String(amount), "ether")
       });
       const msg = `
 sendAmount() method params:

@@ -1,5 +1,5 @@
 <template lang="pug">
-form.row.frame(@submit.prevent="getMatrixUserById")
+form.row.frame(@submit.prevent.stop="getCoreUserByMatrixPosition")
   .row
     .col.col-sm-3.mb-3
       label.col-form-label(for='matrix-level') Matrix index
@@ -31,7 +31,7 @@ form.row.frame(@submit.prevent="getMatrixUserById")
       type="submit"
       class="btn btn-outline-warning"
       :disabled="disabled.status"
-    ) Get Matrix user
+    ) Get Core User by matrix position
 </template>
 
 <script lang="ts" setup>
@@ -64,7 +64,7 @@ const validateValue = async (value: any) => {
   }
 }
 
-const getMatrixUserById = async () => {
+const getCoreUserByMatrixPosition = async () => {
   await validateValue(userMatrixIndex.value)
   if (!error.value) {
     await $Blockchain.GetCoreUserByMatrixPosition(userMatrixLevel.value, userMatrixIndex.value)
