@@ -36,7 +36,6 @@
 import { ref, watch, onMounted } from 'vue'
 import { useNuxtApp } from '#app'
 import { useDisabled } from '~/composables/useDisabled'
-import Web3 from 'web3'
 
 const disabled = useDisabled()
 const { $Blockchain } = useNuxtApp()

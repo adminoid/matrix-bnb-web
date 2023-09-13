@@ -1,8 +1,10 @@
 import Web3 from 'web3'
+
 import {
   TCurrency,
   ICommon, IExternal, INetwork
 } from '~/libs/blockchain/types'
+
 import CoreJson from '~/contracts/Core.sol/Core.json'
 
 class Config {
@@ -190,7 +192,6 @@ whose: ${resp.whose}
           to: new Config().CONTRACT_ADDRESS,
         })
 
-
       console.info('here debug')
       console.log(resp)
 
@@ -201,7 +202,7 @@ whose: ${resp.whose}
       } else {
         msg = `
 getMatrixUser() method response:
-total in matrix level ${level}: ${resp.total}
+total in matrix level[${level}] (starts with 1): ${resp.total}
 index (starts with 0): ${resp.user.index}
 parent: ${resp.user.parent}
 isRight: ${resp.user.isRight}

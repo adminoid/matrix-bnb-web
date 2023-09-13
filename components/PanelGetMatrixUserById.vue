@@ -42,12 +42,12 @@ import { useDisabled } from '~/composables/useDisabled'
 const disabled = useDisabled()
 const { $Blockchain } = useNuxtApp()
 
-const userMatrixLevel = ref('0')
+const userMatrixLevel = ref(0)
 
-const userMatrixIndex = ref('0')
+const userMatrixIndex = ref(0)
 
 const error = ref('')
-watch(userMatrixIndex, async (newValue) => {
+watch(userMatrixLevel, async (newValue) => {
   await validateValue(newValue)
 })
 
@@ -57,7 +57,7 @@ const validateValue = async (value: any) => {
     error.value = 'Please connect your wallet first'
   } else {
     if (value < 0 || value > 20) {
-      error.value = 'please enter valid ethereum address'
+      error.value = 'please enter value between 0 and 20'
     } else {
       error.value = ''
     }
@@ -65,7 +65,7 @@ const validateValue = async (value: any) => {
 }
 
 const getCoreUserByMatrixPosition = async () => {
-  await validateValue(userMatrixIndex.value)
+  await validateValue(userMatrixLevel.value)
   if (!error.value) {
     await $Blockchain.GetCoreUserByMatrixPosition(userMatrixLevel.value, userMatrixIndex.value)
   }
