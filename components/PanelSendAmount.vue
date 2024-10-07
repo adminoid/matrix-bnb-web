@@ -38,7 +38,7 @@ watch(amountValue, async (newValue) => {
   await validateValue(newValue)
 })
 
-const validateValue = async (value) => {
+const validateValue = async (value: any) => {
   const accounts = await $Blockchain.Web3.eth.getAccounts();
   if (!accounts || !$Blockchain.Wallet) {
     error.value = 'Please connect your wallet first'

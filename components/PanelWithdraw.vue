@@ -55,6 +55,7 @@ const validateValue = async (value) => {
     }
   }
 }
+
 const withdrawClaim = async () => {
   await validateValue(withdrawClaimAmount.value)
   if (!error.value) {
