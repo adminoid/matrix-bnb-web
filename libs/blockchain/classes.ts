@@ -335,12 +335,24 @@ TX: ${resp.transactionHash}
   async withdrawTen (): Promise<void> {
     this.EmitDisabled(`withdrawTen`, true)
     try {
+
+      const estimatedGas = await this.Core
+          .methods
+          .getTenPercentOnceYear()
+          .estimateGas({
+            from: this.Wallet,
+            value: 1000000000000000,
+          });
+      const gasPrice = await this.Web3.eth.getGasPrice()
+
       await this.Core.methods
         .getTenPercentOnceYear()
         .send({
           from: this.Wallet,
-          gasLimit: 310000, // not required
+          gasLimit: estimatedGas,
+          gasPrice,
         })
+
       await this.ThrowAlert('success', "check your balance")
 
     } catch (e) {
